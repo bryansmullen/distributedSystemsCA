@@ -1,0 +1,23 @@
+// syntax declaration
+syntax = "proto3";
+
+// java options
+option java_multiple_files = true;
+option java_package = "com.bryanmullen.milkingService";
+option java_outer_classname = "MilkingPackage";
+
+// package
+package milkingService;
+
+// service definition
+service MilkingService {
+  rpc dummyMethod (DummyRequest) returns (DummyResponse) {}
+}
+
+message DummyRequest {
+  string name = 1;
+}
+
+message DummyResponse {
+  string message = 1;
+}
