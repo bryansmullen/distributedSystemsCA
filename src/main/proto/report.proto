@@ -1,0 +1,23 @@
+// syntax declaration
+syntax = "proto3";
+
+// java options
+option java_multiple_files = true;
+option java_package = "com.bryanmullen.reportService";
+option java_outer_classname = "ReportPackage";
+
+// package
+package reportService;
+
+// service definition
+service ReportService {
+  rpc reportMethod (ReportRequest) returns (ReportResponse) {}
+}
+
+message ReportRequest {
+  string name = 1;
+}
+
+message ReportResponse {
+  string message = 1;
+}
