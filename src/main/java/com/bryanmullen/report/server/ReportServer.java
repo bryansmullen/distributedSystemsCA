@@ -1,15 +1,15 @@
-package com.bryanmullen.feed.server;
+package com.bryanmullen.report.server;
 
-import com.bryanmullen.feedService.FeedServiceGrpc;
+import com.bryanmullen.reportService.ReportServiceGrpc;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 import java.io.IOException;
 
-public class FeedServer extends FeedServiceGrpc.FeedServiceImplBase {
+public class ReportServer extends ReportServiceGrpc.ReportServiceImplBase {
     public static void main(String[] args) throws IOException, InterruptedException {
         // constants
-        final int PORT = 5052;
+        final int PORT = 5053;
 
         // create the server
         Server server = ServerBuilder
@@ -18,11 +18,11 @@ public class FeedServer extends FeedServiceGrpc.FeedServiceImplBase {
 
         // start the server
         server.start();
-        System.out.println("Feed Server listening on port " + PORT);
+        System.out.println("Report Server listening on port " + PORT);
 
         // shutdown hook to stop the server
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("Shutting down feed server...");
+            System.out.println("Shutting down report server...");
             server.shutdown();
             System.out.println("Server shut down");
         }));

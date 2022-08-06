@@ -18,11 +18,11 @@ public class MilkingServer extends MilkingServiceGrpc.MilkingServiceImplBase {
 
         // start the server
         server.start();
-        System.out.println("Server listening on port " + PORT);
+        System.out.println("Milking Server listening on port " + PORT);
 
         // shutdown hook to stop the server
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("Shutting down server...");
+            System.out.println("Shutting down milking server...");
             server.shutdown();
             System.out.println("Server shut down");
         }));
