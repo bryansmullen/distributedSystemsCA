@@ -1,0 +1,23 @@
+// syntax declaration
+syntax = "proto3";
+
+// java options
+option java_multiple_files = true;
+option java_package = "com.bryanmullen.feedService";
+option java_outer_classname = "FeedPackage";
+
+// package
+package feedService;
+
+// service definition
+service FeedService {
+  rpc feedMethod (FeedRequest) returns (FeedResponse) {}
+}
+
+message FeedRequest {
+  string name = 1;
+}
+
+message FeedResponse {
+  string message = 1;
+}
