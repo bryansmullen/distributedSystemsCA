@@ -14,6 +14,7 @@ public class ReportServer extends ReportServiceGrpc.ReportServiceImplBase {
         // create the server
         Server server = ServerBuilder
                 .forPort(PORT)
+                .addService(new ReportServiceImpl())
                 .build();
 
         // start the server
