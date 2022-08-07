@@ -9,15 +9,54 @@ option java_outer_classname = "MilkingPackage";
 // package
 package milkingService;
 
-// service definition
+// messages
+
+message MilkCollectionRequest{
+
+}
+
+message MilkCollectionResponse {
+
+}
+
+message MilkProductionRequest{
+
+}
+
+message MilkProductionResponse {
+
+}
+
+message MilkCurrentCowRequest{
+
+}
+
+message MilkCurrentCowResponse {
+
+}
+
+// services
 service MilkingService {
-  rpc milkingMethod (MilkingRequest) returns (MilkingResponse) {}
+  // This method should be able to represent the total milk currently
+  // collected in the collection unit relative to the capacity, to give an
+  // indication of when the unit is full.This method will be implemented
+  // using Server Streaming.
+  rpc milkCollection(MilkCollectionRequest) returns (stream
+      MilkCollectionResponse){}
+
+  // This method should be able to log the milk produced by the current
+  // milking session against a particular cow, based on the ID of the current
+  // cow. It should calculate the volume of milk by comparing the current
+  // total collection against the last logged value and calculating the
+  // difference.This method will be implemented using Unary Method.
+  rpc milkProduction(MilkCollectionRequest) returns (
+      MilkCollectionResponse){}
+
+  // This method should be capable of returning the ID of the current cow
+  // being milked. This method will be implemented using Server Streaming.
+  rpc milkCurrentCow(MilkCollectionRequest) returns (stream
+      MilkCollectionResponse){}
 }
 
-message MilkingRequest {
-  string name = 1;
-}
 
-message MilkingResponse {
-  string message = 1;
-}
+
