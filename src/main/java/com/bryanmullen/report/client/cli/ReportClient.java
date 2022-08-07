@@ -1,7 +1,4 @@
 package com.bryanmullen.report.client.cli;
-
-import com.bryanmullen.reportService.ReportRequest;
-import com.bryanmullen.reportService.ReportServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -26,7 +23,8 @@ public class ReportClient {
 
         // select which method to call
         switch (args[0]) {
-            case "reportMethod" -> doReportMethod(channel);
+            case "cowReport" -> doCowReport(channel);
+            case "herdReport" -> doHerdReport(channel);
             default -> System.out.println("Unknown command: " + args[0]);
         }
 
@@ -35,19 +33,16 @@ public class ReportClient {
         channel.shutdown();
     }
 
-    private static void doReportMethod(ManagedChannel channel) {
-        // inform the user of the start of the call
-        System.out.println("Starting to do report method...");
 
-        var stub = ReportServiceGrpc.newBlockingStub(channel);
 
-        var request = ReportRequest.newBuilder()
-                .setName("Testing from client")
-                .build();
+    private static void doCowReport(ManagedChannel channel) {
+        System.out.println("Starting to do Cow Report method...");
 
-        var response = stub.reportMethod(request);
-
-        // print the response
-        System.out.println("Report response: " + response.getMessage());
     }
+
+    private static void doHerdReport(ManagedChannel channel) {
+        System.out.println("Starting to do Herd Report method...");
+
+    }
+
 }
