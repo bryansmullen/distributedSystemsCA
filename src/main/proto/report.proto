@@ -9,15 +9,24 @@ option java_outer_classname = "ReportPackage";
 // package
 package reportService;
 
-// service definition
+// messages
+message CowReportRequest{}
+message CowReportResponse{}
+message HerdReportRequest{}
+message HerdReportResponse{}
+
+// services
 service ReportService {
-  rpc reportMethod (ReportRequest) returns (ReportResponse) {}
-}
+  // This method should return a report about a particular cow, including
+  // information about the amount of milk that particular cow has produced,
+  // it’s current known weight, id etc. This method will be implemented
+  // usingClient Streaming.
+  rpc cowReport (CowReportRequest) returns (CowReportResponse) {}
 
-message ReportRequest {
-  string name = 1;
-}
-
-message ReportResponse {
-  string message = 1;
+  // This method should return a report about the entire herd as a whole,
+  // calculating the average milk produced per cow, the average feed consumed
+  // per cow, as well as average statistics such as weight etc for a broad
+  // overview of the herd.This method will be implemented using Client
+  // Streaming.
+  rpc herdReport (HerdReportRequest) returns (HerdReportResponse) {}
 }
