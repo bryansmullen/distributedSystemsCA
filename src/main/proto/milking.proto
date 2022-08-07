@@ -49,13 +49,13 @@ service MilkingService {
   // cow. It should calculate the volume of milk by comparing the current
   // total collection against the last logged value and calculating the
   // difference.This method will be implemented using Unary Method.
-  rpc milkProduction(MilkCollectionRequest) returns (
-      MilkCollectionResponse){}
+  rpc milkProduction(MilkProductionRequest) returns (
+      MilkProductionResponse){}
 
   // This method should be capable of returning the ID of the current cow
   // being milked. This method will be implemented using Server Streaming.
-  rpc milkCurrentCow(MilkCollectionRequest) returns (stream
-      MilkCollectionResponse){}
+  rpc milkCurrentCow(MilkCurrentCowRequest) returns (stream
+      MilkCurrentCowResponse){}
 }
 
 
