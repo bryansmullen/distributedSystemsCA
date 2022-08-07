@@ -1,7 +1,5 @@
 package com.bryanmullen.milking.client.cli;
 
-import com.bryanmullen.milkingService.MilkingRequest;
-import com.bryanmullen.milkingService.MilkingServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -25,7 +23,9 @@ public class MilkingClient {
 
         // select which method to call
         switch (args[0]) {
-            case "milkingMethod" -> doMilkingMethod(channel);
+            case "milkCollection" -> doMilkCollection(channel);
+            case "milkProduction" -> doMilkProduction(channel);
+            case "milkCurrentCow" -> doMilkCurrentCow(channel);
             default -> System.out.println("Unknown command: " + args[0]);
         }
 
@@ -34,20 +34,21 @@ public class MilkingClient {
         channel.shutdown();
     }
 
-    private static void doMilkingMethod(ManagedChannel channel){
+
+    private static void doMilkCollection(ManagedChannel channel) {
         // inform the user of the start of the call
-        System.out.println("Starting to do dummy method...");
-
-        var stub =
-                MilkingServiceGrpc.newBlockingStub(channel);
-
-        var request = MilkingRequest.newBuilder()
-                .setName("Testing from client")
-                .build();
-
-        var response = stub.milkingMethod(request);
-
-        // print the response
-        System.out.println("Milking response: " + response.getMessage());
+        System.out.println("Starting to do Milk Collection method...");
     }
+
+    private static void doMilkProduction(ManagedChannel channel) {
+        // inform the user of the start of the call
+        System.out.println("Starting to do Milk Production method...");
+    }
+
+    private static void doMilkCurrentCow(ManagedChannel channel) {
+        // inform the user of the start of the call
+        System.out.println("Starting to do Milk Current Cow method...");
+    }
+
+
 }
