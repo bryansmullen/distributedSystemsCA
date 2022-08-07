@@ -1,7 +1,4 @@
 package com.bryanmullen.feed.client.cli;
-
-import com.bryanmullen.feedService.FeedRequest;
-import com.bryanmullen.feedService.FeedServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -25,7 +22,9 @@ public class FeedClient {
 
         // select which method to call
         switch (args[0]) {
-            case "feedMethod" -> doFeedMethod(channel);
+            case "addToFeedAvailable" -> doAddToFeedAvailable(channel);
+            case "currentWaterAvailable" -> doCurrentWaterAvailable(channel);
+            case "feedConsumption" -> doFeedConsumption(channel);
             default -> System.out.println("Unknown command: " + args[0]);
         }
 
@@ -34,19 +33,19 @@ public class FeedClient {
         channel.shutdown();
     }
 
-    private static void doFeedMethod(ManagedChannel channel){
-        // inform the user of the start of the call
-        System.out.println("Starting to do feed method...");
-
-        var stub = FeedServiceGrpc.newBlockingStub(channel);
-
-        var request = FeedRequest.newBuilder()
-                .setName("Testing from client")
-                .build();
-
-        var response = stub.feedMethod(request);
-
-        // print the response
-        System.out.println("Feed response: " + response.getMessage());
+    private static void doAddToFeedAvailable(ManagedChannel channel) {
+            System.out.println("Starting to do Add To Feed Available method...");
     }
+
+    private static void doCurrentWaterAvailable(ManagedChannel channel) {
+        System.out.println("Starting to do Current Water Available method...");
+
+    }
+
+    private static void doFeedConsumption(ManagedChannel channel) {
+        System.out.println("Starting to do Feed Consumption method...");
+
+    }
+
+
 }
