@@ -1,17 +1,16 @@
 package com.bryanmullen.milking.server;
-
-import com.bryanmullen.milkingService.DummyRequest;
-import com.bryanmullen.milkingService.DummyResponse;
+import com.bryanmullen.milkingService.MilkingRequest;
+import com.bryanmullen.milkingService.MilkingResponse;
 import com.bryanmullen.milkingService.MilkingServiceGrpc;
 import io.grpc.stub.StreamObserver;
 
 public class MilkingServiceImpl extends MilkingServiceGrpc.MilkingServiceImplBase {
     @Override
-    public void dummyMethod(DummyRequest request,
-                      StreamObserver<DummyResponse> responseStreamObserver) {
+    public void milkingMethod(MilkingRequest request,
+                              StreamObserver<MilkingResponse> responseStreamObserver) {
         System.out.println("receiving dummy request");
-        DummyResponse reply =
-                DummyResponse.newBuilder()
+        MilkingResponse reply =
+                MilkingResponse.newBuilder()
                         .setMessage("Hello " + request.getName())
                         .build();
         responseStreamObserver.onNext(reply);

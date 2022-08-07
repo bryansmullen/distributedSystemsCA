@@ -1,6 +1,6 @@
 package com.bryanmullen.milking.client.cli;
 
-import com.bryanmullen.milkingService.DummyRequest;
+import com.bryanmullen.milkingService.MilkingRequest;
 import com.bryanmullen.milkingService.MilkingServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -25,7 +25,7 @@ public class MilkingClient {
 
         // select which method to call
         switch (args[0]) {
-            case "dummyMethod" -> doDummyMethod(channel);
+            case "milkingMethod" -> doMilkingMethod(channel);
             default -> System.out.println("Unknown command: " + args[0]);
         }
 
@@ -34,18 +34,18 @@ public class MilkingClient {
         channel.shutdown();
     }
 
-    private static void doDummyMethod(ManagedChannel channel){
+    private static void doMilkingMethod(ManagedChannel channel){
         // inform the user of the start of the call
         System.out.println("Starting to do dummy method...");
 
         var stub =
                 MilkingServiceGrpc.newBlockingStub(channel);
 
-        var request = DummyRequest.newBuilder()
+        var request = MilkingRequest.newBuilder()
                 .setName("Testing from client")
                 .build();
 
-        var response = stub.dummyMethod(request);
+        var response = stub.milkingMethod(request);
 
         // print the response
         System.out.println("Milking response: " + response.getMessage());

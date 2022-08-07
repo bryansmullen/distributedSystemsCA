@@ -11,13 +11,13 @@ package milkingService;
 
 // service definition
 service MilkingService {
-  rpc dummyMethod (DummyRequest) returns (DummyResponse) {}
+  rpc milkingMethod (MilkingRequest) returns (MilkingResponse) {}
 }
 
-message DummyRequest {
+message MilkingRequest {
   string name = 1;
 }
 
-message DummyResponse {
+message MilkingResponse {
   string message = 1;
 }
