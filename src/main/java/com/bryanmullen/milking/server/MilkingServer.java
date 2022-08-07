@@ -14,6 +14,7 @@ public class MilkingServer extends MilkingServiceGrpc.MilkingServiceImplBase {
         // create the server
         Server server = ServerBuilder
                 .forPort(PORT)
+                .addService(new MilkingServiceImpl())
                 .build();
 
         // start the server
