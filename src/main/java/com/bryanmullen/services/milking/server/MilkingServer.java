@@ -14,7 +14,7 @@ public class MilkingServer {
         final int SERVICE_PORT = 5051;
         final String SERVICE_TYPE = "_milking._tcp.local.";
         final String SERVICE_NAME = "Milking Service";
-        final String SERVICE_DESCRIPTION = "Milking Description";
+        final String SERVICE_DESCRIPTION = " Milking Description";
 
         // create the server
         Server server = ServerBuilder
