@@ -21,12 +21,12 @@ service ReportService {
   // information about the amount of milk that particular cow has produced,
   // it’s current known weight, id etc. This method will be implemented
   // usingClient Streaming.
-  rpc cowReport (CowReportRequest) returns (CowReportResponse) {}
+  rpc cowReport (stream CowReportRequest) returns (CowReportResponse) {}
 
   // This method should return a report about the entire herd as a whole,
   // calculating the average milk produced per cow, the average feed consumed
   // per cow, as well as average statistics such as weight etc for a broad
   // overview of the herd.This method will be implemented using Client
   // Streaming.
-  rpc herdReport (HerdReportRequest) returns (HerdReportResponse) {}
+  rpc herdReport (stream HerdReportRequest) returns (HerdReportResponse) {}
 }

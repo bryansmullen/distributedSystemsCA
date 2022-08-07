@@ -1,12 +1,10 @@
 package com.bryanmullen.feed.server;
-
-import com.bryanmullen.feedService.FeedServiceGrpc;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 import java.io.IOException;
 
-public class FeedServer extends FeedServiceGrpc.FeedServiceImplBase {
+public class FeedServer  {
     public static void main(String[] args) throws IOException, InterruptedException {
         // constants
         final int PORT = 5052;
