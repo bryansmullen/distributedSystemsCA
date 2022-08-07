@@ -14,6 +14,7 @@ public class FeedServer extends FeedServiceGrpc.FeedServiceImplBase {
         // create the server
         Server server = ServerBuilder
                 .forPort(PORT)
+                .addService(new FeedServiceImpl())
                 .build();
 
         // start the server
