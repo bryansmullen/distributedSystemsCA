@@ -1,4 +1,4 @@
-package com.bryanmullen.milking.client.cli;
+package com.bryanmullen.services.milking.client.cli;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;

@@ -11,29 +11,12 @@ package milkingService;
 
 // messages
 
-message MilkCollectionRequest{
-
-}
-
-message MilkCollectionResponse {
-
-}
-
-message MilkProductionRequest{
-
-}
-
-message MilkProductionResponse {
-
-}
-
-message MilkCurrentCowRequest{
-
-}
-
-message MilkCurrentCowResponse {
-
-}
+message MilkCollectionRequest{}
+message MilkCollectionResponse {}
+message MilkProductionRequest{}
+message MilkProductionResponse {}
+message MilkCurrentCowRequest{}
+message MilkCurrentCowResponse {}
 
 // services
 service MilkingService {

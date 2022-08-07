@@ -1,4 +1,4 @@
-package com.bryanmullen.report.server;
+package com.bryanmullen.services.report.server;
 import com.bryanmullen.reportService.*;
 import io.grpc.stub.StreamObserver;
 

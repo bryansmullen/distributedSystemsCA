@@ -1,29 +1,28 @@
-package com.bryanmullen.milking.server;
+package com.bryanmullen.services.report.server;
 
-import com.bryanmullen.milkingService.MilkingServiceGrpc;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 import java.io.IOException;
 
-public class MilkingServer extends MilkingServiceGrpc.MilkingServiceImplBase {
+public class ReportServer {
     public static void main(String[] args) throws IOException, InterruptedException {
         // constants
-        final int PORT = 5051;
+        final int PORT = 5053;
 
         // create the server
         Server server = ServerBuilder
                 .forPort(PORT)
-                .addService(new MilkingServiceImpl())
+                .addService(new ReportServiceImpl())
                 .build();
 
         // start the server
         server.start();
-        System.out.println("Milking Server listening on port " + PORT);
+        System.out.println("Report Server listening on port " + PORT);
 
         // shutdown hook to stop the server
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("Shutting down milking server...");
+            System.out.println("Shutting down report server...");
             server.shutdown();
             System.out.println("Server shut down");
         }));

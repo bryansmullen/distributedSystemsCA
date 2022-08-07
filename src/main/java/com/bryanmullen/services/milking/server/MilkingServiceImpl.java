@@ -1,4 +1,4 @@
-package com.bryanmullen.milking.server;
+package com.bryanmullen.services.milking.server;
 
 import com.bryanmullen.milkingService.*;
 import io.grpc.stub.StreamObserver;

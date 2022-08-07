@@ -1,4 +1,4 @@
-package com.bryanmullen.feed.client.cli;
+package com.bryanmullen.services.feed.client.cli;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 

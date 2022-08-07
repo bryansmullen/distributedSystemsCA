@@ -1,4 +1,4 @@
-package com.bryanmullen.feed.server;
+package com.bryanmullen.services.feed.server;
 
 import com.bryanmullen.feedService.*;
 import io.grpc.stub.StreamObserver;
@@ -19,11 +19,16 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
         return new StreamObserver<>() {
             @Override
             public void onNext(AddToFeedRequest value) {
+                System.out.println("Receiving Add To Feed Available Request " +
+                        "Request");
+
                 // build a reply on each on next
                 var reply = AddToFeedResponse.newBuilder().build();
 
                 // feed reply to streamed response observer
                 responseStreamObserver.onNext(reply);
+                System.out.println("Response Sent");
+
             }
 
             @Override
@@ -36,6 +41,7 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
             public void onCompleted() {
                 // response complete
                 responseStreamObserver.onCompleted();
+                System.out.println("Response completed");
             }
         };
     }
@@ -65,6 +71,7 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
 
         // Response complete
         responseStreamObserver.onCompleted();
+        System.out.println("Response completed");
 
     }
 
@@ -92,5 +99,7 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
 
         // Response complete
         responseStreamObserver.onCompleted();
+        System.out.println("Response completed");
+
     }
 }

@@ -1,4 +1,4 @@
-package com.bryanmullen.report.client.cli;
+package com.bryanmullen.services.report.client.cli;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
