@@ -23,13 +23,14 @@ service FeedService {
   // for the animals. Further to this it should log the current weight before
   // and after delivery in order to log the amount consumed.This method will
   // be implemented using Bi Directional Streaming.
-  rpc addToFeedAvailable (AddToFeedRequest) returns (AddToFeedResponse) {}
+  rpc addToFeedAvailable (stream AddToFeedRequest) returns
+      (stream AddToFeedResponse) {}
 
   // This method should simply return the current water available by means of
   // a weight/volume sensor, for ensuring there is adequate water available
   // .This method will be implemented using Server Streaming.
   rpc currentWaterAvailable (CurrentWaterRequest) returns
-      (CurrentWaterResponse) {}
+      (stream CurrentWaterResponse) {}
 
   // This method should return a report outlining the feed consumed in a
   // particular time period. This could be used either for predicting supply
