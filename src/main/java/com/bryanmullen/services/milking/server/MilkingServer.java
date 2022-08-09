@@ -6,7 +6,6 @@ import io.grpc.ServerBuilder;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 import java.io.IOException;
-import java.net.Inet4Address;
 
 public class MilkingServer {
     public static void main(String[] args) throws IOException {
@@ -35,7 +34,7 @@ public class MilkingServer {
         System.out.println("Registering service with mDNS...");
 
         // get a jMDNS instance - use the localhost as hostname
-        JmDNS mdns = JmDNS.create(Inet4Address.getLocalHost());
+        JmDNS mdns = JmDNS.create("172.20.10.3");
 
         // service information
         ServiceInfo serviceInfo = ServiceInfo.create(SERVICE_TYPE, SERVICE_NAME
