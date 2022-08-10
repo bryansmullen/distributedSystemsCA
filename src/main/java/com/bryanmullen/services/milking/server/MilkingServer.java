@@ -21,7 +21,11 @@ public class MilkingServer extends ServerBase {
 
 
     public void run() {
-        super.run(milkingServer);
+        try {
+            super.run(milkingServer);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

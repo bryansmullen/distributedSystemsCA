@@ -15,25 +15,26 @@ public abstract class ServerBase {
     // instance variables
     Properties properties;
     BindableService serviceImpl;
+    String serverName;
 
 
     // constructor
     public ServerBase(String propertiesFilePath, BindableService bindableService) throws IOException {
         properties = PropertiesReader.getProperties(propertiesFilePath);
+        setServerName(properties.getProperty("service_name"));
         serviceImpl = bindableService;
     }
 
+
     // methods
-    public void run(Server server)  {
+    public void run(Server server) throws InterruptedException {
         // constants
         startServer(server);
 
         var serviceRegistration = new ServiceRegistration(properties);
-        try {
+
             serviceRegistration.register();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+
 
         serverListen(server, serviceRegistration.getJmDNS(), serviceRegistration.getServiceInfo());
     }
@@ -50,11 +51,11 @@ public abstract class ServerBase {
         System.out.println("Server started on port " + properties.getProperty("service_port"));
     }
 
-    private static void serverListen(io.grpc.Server server, JmDNS mdns,
-                                     ServiceInfo serviceInfo) {
+    private void serverListen(io.grpc.Server server, JmDNS mdns,
+                              ServiceInfo serviceInfo) {
         // shutdown hook to stop the server
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("Shutting down milking server...");
+            System.out.println("Shutting down " + serverName + "...");
             // unregister the service
             mdns.unregisterService(serviceInfo);
             System.out.println("Service Unregistered");
@@ -77,7 +78,8 @@ public abstract class ServerBase {
 
         try {
             // inform the user that the server is ready
-            System.out.println("Milking Server Listening for Requests...");
+            System.out.println(serverName +
+                    " Listening for Requests...");
 
             server.awaitTermination();
         } catch (InterruptedException e) {
@@ -88,6 +90,10 @@ public abstract class ServerBase {
     // getters and setters
     public Properties getProperties() {
         return properties;
+    }
+
+    private void setServerName(String service_name) {
+        this.serverName = service_name;
     }
 
 }
