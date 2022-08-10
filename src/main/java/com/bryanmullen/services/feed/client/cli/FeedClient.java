@@ -1,48 +1,25 @@
 package com.bryanmullen.services.feed.client.cli;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
-public class FeedClient {
-    public static void main(String[] args) {
-        // constants
-        final String HOST = "127.0.0.1";
-        final int PORT = 5052;
+import com.bryanmullen.services.shared.ClientBase;
 
-        // check that command line arguments are not empty
-        if (args.length == 0) {
-            System.out.println("One argument required: the method to call");
-            return;
-        }
+import java.io.IOException;
 
-        // create the channel
-        ManagedChannel channel = ManagedChannelBuilder.
-                forAddress(HOST, PORT)
-                .usePlaintext()
-                .build();
+public class FeedClient extends ClientBase {
 
-        // select which method to call
-        switch (args[0]) {
-            case "addToFeedAvailable" -> doAddToFeedAvailable(channel);
-            case "currentWaterAvailable" -> doCurrentWaterAvailable(channel);
-            case "feedConsumption" -> doFeedConsumption(channel);
-            default -> System.out.println("Unknown command: " + args[0]);
-        }
-
-        // close the channel
-        System.out.println("Closing channel...");
-        channel.shutdown();
+    public FeedClient(String propertiesFilePath) throws IOException {
+        super(propertiesFilePath);
     }
 
-    private static void doAddToFeedAvailable(ManagedChannel channel) {
-            System.out.println("Starting to do Add To Feed Available method...");
+    public void addToFeedAvailable() {
+        System.out.println("Starting to do Add To Feed Available method...");
     }
 
-    private static void doCurrentWaterAvailable(ManagedChannel channel) {
+    public void currentWaterAvailable() {
         System.out.println("Starting to do Current Water Available method...");
 
     }
 
-    private static void doFeedConsumption(ManagedChannel channel) {
+    public void feedConsumption() {
         System.out.println("Starting to do Feed Consumption method...");
 
     }
