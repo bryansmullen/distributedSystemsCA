@@ -1,6 +1,7 @@
 package com.bryanmullen.mdns;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
@@ -20,7 +21,7 @@ public class ServiceDiscovery {
             // tethering, and any other network i tested on except for my
             // work network. You will need to enter your own IP address here
             // or replace with InetAddress.getLocalHost().
-            JmDNS jmdns = JmDNS.create("172.20.10.3");
+            JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 
             // will discover the service based on service type
             MyServiceListener serviceListener = new MyServiceListener();
