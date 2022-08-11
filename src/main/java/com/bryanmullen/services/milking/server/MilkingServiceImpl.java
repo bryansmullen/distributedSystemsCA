@@ -18,7 +18,7 @@ public class MilkingServiceImpl extends MilkingServiceGrpc.MilkingServiceImplBas
     Random random = new Random(); // Random number generator - the values we
     // use in this project will be randomly generated as we are not connected
     // to real life sensors. In reality these values would be taken from
-    // sensors and we would not require this random object.
+    // sensors, and we would not require this random object.
 
 
     /**
@@ -100,12 +100,18 @@ public class MilkingServiceImpl extends MilkingServiceGrpc.MilkingServiceImplBas
     @Override
     public void milkProduction(MilkProductionRequest request,
                                StreamObserver<MilkProductionResponse> responseStreamObserver) {
-        // Log that method has been called
+        // log the checker id that is sending the request
+        logger.info("Milk Collection Request received from checker " + request.getCheckedBy());
 
-        //
+        var currentVolume = getCurrentMilkVolume(); // get the current volume
+        var lastLoggedVolume = getLastLoggedVolume(); // get the last
+
+        // TODO: connect to a database and persist the volume of milk produced
 
         // Build a reply
         var reply = MilkProductionResponse.newBuilder()
+                .setCurrentCowId(getCurrentCowId())
+                .setMilkVolumeLogged(currentVolume - lastLoggedVolume)
                 .build();
 
         // Feed a single reply to the onNext function
@@ -115,6 +121,15 @@ public class MilkingServiceImpl extends MilkingServiceGrpc.MilkingServiceImplBas
         responseStreamObserver.onCompleted();
     }
 
+    /**
+     * This method should return the last logged volume of milk in the database.
+     * Since we are not connected to a database, we will return the current
+     * volume - 10. This would in reality be the last logged volume of milk in
+     * the database.
+     */
+    private double getLastLoggedVolume() {
+        return getCurrentMilkVolume() - 10;
+    }
     /**
      * This method should be capable of returning the ID of the current cow
      * being milked. This method will be implemented using Server Streaming.
@@ -130,7 +145,7 @@ public class MilkingServiceImpl extends MilkingServiceGrpc.MilkingServiceImplBas
         logger.info("Milk Collection Request received from checker " + request.getCheckedBy());
 
         // find which cow is currently being milked - this would be done by
-        // a sensor or other device. For simplicity we will just use a random
+        // a sensor or other device. For simplicity, we will just use a random
         // number.
         var currentCowBeingMilkedId = getCurrentCowId();
 

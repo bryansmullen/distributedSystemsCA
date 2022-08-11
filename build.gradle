@@ -23,15 +23,14 @@ repositories {
 
 dependencies {
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.48.0'
+    runtimeOnly 'com.google.protobuf:protobuf-java-util:3.21.4'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
     implementation "io.grpc:grpc-services:1.48.0"
     implementation 'io.grpc:grpc-stub:1.48.0'
-    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
     implementation 'org.jmdns:jmdns:3.5.8'
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
-    implementation 'org.slf4j:slf4j-simple:1.7.36'
-    runtimeOnly 'com.google.protobuf:protobuf-java-util:3.21.4'
-
 }
 
 test {

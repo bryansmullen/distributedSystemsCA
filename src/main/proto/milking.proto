@@ -29,13 +29,21 @@ message MilkCollectionResponse {
   // that it is not safe to collect more milk
 }
 
-message MilkProductionRequest{}
-message MilkProductionResponse {}
+message MilkProductionRequest{
+  string checkedBy = 1; // who checked the milk so that responsible person
+  // can be identified in the audit log
+}
+
+message MilkProductionResponse {
+  int32 currentCowId = 1;
+  double milkVolumeLogged = 2; // volume of milk produced in litres
+}
 
 message MilkCurrentCowRequest{
   string checkedBy = 1; // who checked the milk so that responsible person
   // can be identified in the audit log
 }
+
 message MilkCurrentCowResponse {
   int32 currentCowId = 1;
   google.protobuf.Timestamp startTime = 2;
