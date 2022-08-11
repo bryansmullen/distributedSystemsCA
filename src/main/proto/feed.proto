@@ -10,8 +10,18 @@ option java_outer_classname = "FeedPackage";
 package feedService;
 
 // messages
-message AddToFeedRequest{}
-message AddToFeedResponse{}
+message AddToFeedRequest{
+  double feedMassToAdd = 1;
+  string addedBy = 2;
+
+}
+
+message AddToFeedResponse{
+  double currentFeedMass = 1;
+  double feedMassAdded = 2;
+  string message = 3;
+}
+
 message CurrentWaterRequest{}
 message CurrentWaterResponse{}
 message FeedConsumptionRequest{}
