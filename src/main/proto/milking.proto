@@ -9,14 +9,38 @@ option java_outer_classname = "MilkingPackage";
 // package
 package milkingService;
 
+// imports
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+
 // messages
 
-message MilkCollectionRequest{}
-message MilkCollectionResponse {}
+message MilkCollectionRequest{
+  string checkedBy = 1; // who checked the milk so that responsible person
+  // can be identified in the audit log
+}
+
+message MilkCollectionResponse {
+  double milkVolumeInLitres = 1; // volume of milk collected in litres at the
+  // time of check
+  double capacityInLitres = 2; // capacity of the milk tank
+  bool isFull = 3; // true if the tank is full at the time of check to indicate
+  // that it is not safe to collect more milk
+}
+
 message MilkProductionRequest{}
 message MilkProductionResponse {}
-message MilkCurrentCowRequest{}
-message MilkCurrentCowResponse {}
+
+message MilkCurrentCowRequest{
+  string checkedBy = 1; // who checked the milk so that responsible person
+  // can be identified in the audit log
+}
+message MilkCurrentCowResponse {
+  int32 currentCowId = 1;
+  google.protobuf.Timestamp startTime = 2;
+  google.protobuf.Duration duration = 3;
+}
 
 // services
 service MilkingService {
