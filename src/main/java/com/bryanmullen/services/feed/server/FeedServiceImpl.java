@@ -12,6 +12,7 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
     Logger logger = LoggerFactory.getLogger(FeedServiceImpl.class); //
     // Logger for this class so we can log messages to the console.
     final double FEED_TRAY_CAPACITY_IN_KG = 10; // The capacity of the feed tray.
+    final double WATER_CAPACITY_IN_L = 10; // The capacity of the water tank.
     Random random = new Random(); // Random number generator - the values we
     // use in this project will be randomly generated as we are not connected
     // to real life sensors. In reality these values would be taken from
@@ -37,7 +38,7 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
                 logger.info("Add To Feed Request received from checker " + request.getAddedBy());
 
                 // check that the weight of the feed tray is not full - if it is full then we should not add any more feed
-                if (currentFeedTrayWeight + totalFeedAdded + request.getFeedMassToAdd() > FEED_TRAY_CAPACITY_IN_KG ) {
+                if (currentFeedTrayWeight + totalFeedAdded + request.getFeedMassToAdd() > FEED_TRAY_CAPACITY_IN_KG) {
                     // in the case that the feed tray is full, we should not add any more feed, however we should
                     // still send a response to the client to let them know that the feed tray is full as well as the
                     // amount of feed that was added.
@@ -64,7 +65,7 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
             private void addToFeed(double feedMassToAdd) {
                 // add the feed to the feed tray - in reality this would be a controller for a physical feed tray and
                 // this would be a call to the physical feed tray to add the feed.
-                logger.info( feedMassToAdd + "kg of Feed Added to Feed Tray");
+                logger.info(feedMassToAdd + "kg of Feed Added to Feed Tray");
             }
 
             private double getFeedTrayWeight() {
@@ -97,22 +98,49 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
     @Override
     public void currentWaterAvailable(CurrentWaterRequest request,
                                       StreamObserver<CurrentWaterResponse> responseStreamObserver) {
-        // Log that method has been called
-        System.out.println("Receiving Current Water Available Request");
 
-        // Build a reply
-        var reply = CurrentWaterResponse.newBuilder()
-                .build();
+        // log the checker id that is sending the request
+        logger.info("Water Available Request received from checker " + request.getCheckedBy());
 
-        // Feed multiple replies to the onNext function
-        for (int i = 0; i < 10; i++) {
-            responseStreamObserver.onNext(reply);
+
+        // how close together the responses will be sent. Responses will
+        // continue to be sent until the water collection is empty or the client cancels the request.
+        int TIME_BETWEEN_RESPONSES_IN_MILLIS = 1000;
+
+        // Variables to keep track of the milk collection and to exit the loop
+        boolean isEmpty = false;
+        double currentVolume;
+
+        while (!isEmpty) { // while the collection is not full
+            currentVolume = getCurrentWaterVolume(); // get the current volume
+            isEmpty = currentVolume / WATER_CAPACITY_IN_L <= 0.1; // check if
+            // the collection is empty - we assume 10% is considered "empty" to
+            // allow for some error in the sensor and to allow time to refill the tank.
+
+            // create the response object and send it to the client
+            responseStreamObserver.onNext(CurrentWaterResponse.newBuilder()
+                    .setCurrentWaterMass(currentVolume)
+                    .setIsWaterEmpty(isEmpty)
+                    .build());
+
+            // wait for a second before sending the next response message to
+            // the client - this is to simulate the time between responses.
+            try {
+                Thread.sleep(TIME_BETWEEN_RESPONSES_IN_MILLIS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+
 
         // Response complete
         responseStreamObserver.onCompleted();
-        System.out.println("Response completed");
+    }
 
+    private double getCurrentWaterVolume() {
+        return random.nextDouble(WATER_CAPACITY_IN_L);// This value would in
+        // reality be the current volume of the water dispenser which would
+        // be pulled from a sensor or other device.
     }
 
     /**

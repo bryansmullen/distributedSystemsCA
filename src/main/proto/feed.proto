@@ -22,8 +22,16 @@ message AddToFeedResponse{
   string message = 3;
 }
 
-message CurrentWaterRequest{}
-message CurrentWaterResponse{}
+message CurrentWaterRequest{
+  string checkedBy = 1; // who checked the water so that responsible person
+  // can be identified in the audit log
+}
+
+message CurrentWaterResponse{
+  double currentWaterMass = 1;
+  bool isWaterEmpty = 2;
+}
+
 message FeedConsumptionRequest{}
 message FeedConsumptionResponse{}
 
