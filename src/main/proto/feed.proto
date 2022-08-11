@@ -9,6 +9,9 @@ option java_outer_classname = "FeedPackage";
 // package
 package feedService;
 
+// imports
+import "google/protobuf/timestamp.proto";
+
 // messages
 message AddToFeedRequest{
   double feedMassToAdd = 1;
@@ -32,8 +35,17 @@ message CurrentWaterResponse{
   bool isWaterEmpty = 2;
 }
 
-message FeedConsumptionRequest{}
-message FeedConsumptionResponse{}
+message FeedConsumptionRequest{
+  google.protobuf.Timestamp startDate = 1;
+  google.protobuf.Timestamp endDate = 2;
+  string checkedBy = 3; // who checked the feed consumption so that responsible person
+  // can be identified in the audit log
+}
+
+message FeedConsumptionResponse{
+  double feedConsumed = 1;
+  string message = 2;
+}
 
 // service definition
 service FeedService {

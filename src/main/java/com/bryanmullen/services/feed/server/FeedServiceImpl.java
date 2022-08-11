@@ -1,10 +1,12 @@
 package com.bryanmullen.services.feed.server;
 
 import com.bryanmullen.feedService.*;
+import com.google.protobuf.Timestamp;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Random;
 
 
@@ -154,11 +156,21 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
     @Override
     public void feedConsumption(FeedConsumptionRequest request,
                                 StreamObserver<FeedConsumptionResponse> responseStreamObserver) {
-        // Log that method has been called
-        System.out.println("Receiving Feed Consumption Request");
+
+        Timestamp startTime = request.getStartDate();
+        Timestamp endTime = request.getEndDate();
+
+
+        // log the checker id that is sending the request
+        logger.info("Feed Consumption Request received from checker " + request.getCheckedBy());
+
+        // get feed logs from the database
+        var feedLogs = getFeedLogsFromDb(startTime,endTime);
 
         // Build a reply
         var reply = FeedConsumptionResponse.newBuilder()
+                .setFeedConsumed(Arrays.stream(feedLogs).sum())
+                .setMessage("Feed Consumption Report for " + startTime + " to " + endTime)
                 .build();
 
         // Feed a single reply to the onNext function
@@ -168,5 +180,19 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
         responseStreamObserver.onCompleted();
         System.out.println("Response completed");
 
+    }
+
+    private double[] getFeedLogsFromDb(
+            Timestamp startTime, Timestamp endTime) {
+        // get the feed logs from the database
+        double[] feedLogs = new double[10];
+
+        logger.info("Checking Database for Feed Logs between " + startTime + " and " + endTime);
+
+        for (int i = 0; i < 10; i++) {
+            feedLogs[i] = random.nextDouble(FEED_TRAY_CAPACITY_IN_KG);
+        }
+
+        return feedLogs;
     }
 }
