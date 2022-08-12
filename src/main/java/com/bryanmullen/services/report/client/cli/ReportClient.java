@@ -28,7 +28,7 @@ public class ReportClient extends ClientBase {
      * particular cow has produced, it’s current known weight, id etc. This method will be implemented using Client
      * Streaming.
      */
-    public void cowReport() {
+    public void cowReport(int cowId, String checkedBy) {
         // log the start of the call
         logger.info("Starting to do Cow Report method...");
 
@@ -42,8 +42,8 @@ public class ReportClient extends ClientBase {
                         .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
                         .cowReport(CowReportRequest
                                 .newBuilder()
-                                .setCowId(1)
-                                .setCheckedBy("Bryan")
+                                .setCowId(cowId)
+                                .setCheckedBy(checkedBy)
                                 .build());
 
         // print the response to the console
@@ -59,7 +59,7 @@ public class ReportClient extends ClientBase {
      * cow, the average feed consumed per cow, as well as average statistics such as weight etc. for a broad overview of
      * the herd.This method will be implemented using Client Streaming.
      */
-    public void herdReport() throws InterruptedException {
+    public void herdReport(int cowId, String checkedBy) throws InterruptedException {
         // log the start of the call
         logger.info("Starting to do Herd Report method...");
 
@@ -94,8 +94,8 @@ public class ReportClient extends ClientBase {
         for (int i = 0; i < 10; i++) {
             streamObserver.onNext(HerdReportRequest
                     .newBuilder()
-                    .setCowId(i)
-                    .setCheckedBy("Bryan")
+                    .setCowId(cowId)
+                    .setCheckedBy(checkedBy)
                     .build());
             Thread.sleep(1000);
         }

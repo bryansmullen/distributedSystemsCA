@@ -7,8 +7,8 @@ public class ReportClientApp {
 
         var reportClient = new ReportClient("src/main/resources/report.properties");
         reportClient.getService();
-        reportClient.cowReport();
-        reportClient.herdReport();
+        reportClient.cowReport(1, "Bryan");
+        reportClient.herdReport(1, "Bryan");
 
     }
 
