@@ -22,8 +22,16 @@ message CowReportResponse{
   double milkProducedThisMonth = 4;
 }
 
-message HerdReportRequest{}
-message HerdReportResponse{}
+message HerdReportRequest{
+  string checkedBy = 1;
+  int32 cowId = 2;
+}
+
+message HerdReportResponse{
+  repeated CowReportResponse cows = 1;
+  double averageWeight = 2;
+  double averageMilkProducedThisMonth = 3;
+}
 
 // services
 service ReportService {

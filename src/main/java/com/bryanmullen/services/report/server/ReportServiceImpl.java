@@ -1,15 +1,16 @@
 package com.bryanmullen.services.report.server;
 
 import com.bryanmullen.reportService.*;
-import com.bryanmullen.services.milking.server.MilkingServiceImpl;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
-    Logger logger = LoggerFactory.getLogger(MilkingServiceImpl.class); //
+    Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class); //
     Random random = new Random(); // Random number generator - the values we
     // use in this project will be randomly generated as we are not connected
     // to real life sensors. In reality these values would be taken from
@@ -67,10 +68,27 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
      */
     @Override
     public StreamObserver<HerdReportRequest> herdReport(StreamObserver<HerdReportResponse> responseStreamObserver) {
+        List<CowReportResponse> herdReport = new ArrayList<>();
         return new StreamObserver<>() {
             @Override
-            public void onNext(HerdReportRequest value) {
-                System.out.println("Data Received");
+            public void onNext(HerdReportRequest request) {
+                // log the checker id that is sending the request
+                logger.info("Herd Report Request received from checker " + request.getCheckedBy());
+
+                double cowWeight = getCowWeight(request.getCowId()); // get the cow weight
+                double milkVolume = getCowMilkVolume(request.getCowId()); // get the cow milk volume
+                String cowName = getCowName(request.getCowId()); // get the cow name
+
+                CowReportResponse cowReportResponse = CowReportResponse.newBuilder()
+                        .setCowId(request.getCowId())
+                        .setWeight(cowWeight)
+                        .setCowName(cowName)
+                        .setMilkProducedThisMonth(milkVolume)
+                        .build();
+
+                herdReport.add(cowReportResponse);
+                System.out.println("herdReport size: " + herdReport.size());
+                System.out.println(herdReport);
             }
 
             @Override
@@ -82,10 +100,23 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
             @Override
             public void onCompleted() {
                 // build a reply on each on next
-                var reply = HerdReportResponse.newBuilder().build();
+                var response = HerdReportResponse.newBuilder();
 
-                // feed reply to streamed response observer
-                responseStreamObserver.onNext(reply);
+                double totalCowMilkVolume = 0;
+                double totalCowWeight = 0;
+
+                for (CowReportResponse cowReportResponse : herdReport
+                ) {
+                    response.addCows(cowReportResponse);
+                    totalCowMilkVolume += cowReportResponse.getMilkProducedThisMonth();
+                    totalCowWeight += cowReportResponse.getWeight();
+                }
+
+                response.setAverageWeight(totalCowWeight / herdReport.size());
+                response.setAverageMilkProducedThisMonth(totalCowMilkVolume / herdReport.size());
+
+                responseStreamObserver.onNext(response.build());
+
 
                 // response complete
                 responseStreamObserver.onCompleted();
