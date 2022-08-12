@@ -1,5 +1,6 @@
 package com.bryanmullen.services.feed.client.cli;
 
+import com.bryanmullen.feedService.CurrentWaterRequest;
 import com.bryanmullen.feedService.FeedConsumptionRequest;
 import com.bryanmullen.feedService.FeedServiceGrpc;
 import com.bryanmullen.services.shared.ClientBase;
@@ -23,7 +24,23 @@ public class FeedClient extends ClientBase {
     }
 
     public void currentWaterAvailable() {
-        System.out.println("Starting to do Current Water Available method...");
+        // log the start of the call
+        logger.info("Starting to do Current Water Available method...");
+
+        // create the client stub for the service
+        var stub = FeedServiceGrpc.newBlockingStub(getChannel());
+
+        // get the response from the server by calling the service with a new request
+        stub.currentWaterAvailable(CurrentWaterRequest
+                        .newBuilder()
+                        .setCheckedBy("Bryan")
+                        .build())
+                .forEachRemaining(currentWaterResponse -> logger.info("Current Water Available Response received from" +
+                        " " +
+                        "server: " + currentWaterResponse));
+
+        // close the channel
+        super.closeChannel();
 
     }
 
