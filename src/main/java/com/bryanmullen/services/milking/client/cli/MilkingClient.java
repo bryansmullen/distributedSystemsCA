@@ -1,5 +1,6 @@
 package com.bryanmullen.services.milking.client.cli;
 
+import com.bryanmullen.milkingService.MilkCollectionRequest;
 import com.bryanmullen.milkingService.MilkProductionRequest;
 import com.bryanmullen.milkingService.MilkingServiceGrpc;
 import com.bryanmullen.services.shared.ClientBase;
@@ -21,9 +22,21 @@ public class MilkingClient extends ClientBase {
      * capacity, to give an indication of when the unit is full.This method will be implemented using Server Streaming.
      */
     public void milkCollection() {
-        // inform the user of the start of the call
-        System.out.println("Starting to do Milk Collection method...");
-        closeChannel();
+        // log the start of the call
+        logger.info("Starting to do Milk Collection method...");
+
+        // create the client stub for the service
+        var stub = MilkingServiceGrpc.newBlockingStub(getChannel());
+
+        // get the response from the server by calling the service with a new request
+        stub.milkCollection(MilkCollectionRequest
+                        .newBuilder()
+                        .setCheckedBy("Bryan")
+                        .build())
+                .forEachRemaining(milkCollectionResponse -> logger.info("Milk Collection Response received from server: " + milkCollectionResponse));
+
+        // close the channel
+        super.closeChannel();
     }
 
     /**
