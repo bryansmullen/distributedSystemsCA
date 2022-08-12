@@ -35,22 +35,23 @@ public class FeedClient extends ClientBase {
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        var streamObserver = stub.withInterceptors(new ClientInterceptor()).addToFeedAvailable(new StreamObserver<>() {
-            @Override
-            public void onNext(AddToFeedResponse response) {
-                logger.info("Received response: " + response);
-            }
+        var streamObserver = stub.withInterceptors(new ClientInterceptor()).withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
+                .addToFeedAvailable(new StreamObserver<>() {
+                    @Override
+                    public void onNext(AddToFeedResponse response) {
+                        logger.info("Received response: " + response);
+                    }
 
-            @Override
-            public void onError(Throwable t) {
+                    @Override
+                    public void onError(Throwable t) {
 
-            }
+                    }
 
-            @Override
-            public void onCompleted() {
-                latch.countDown();
-            }
-        });
+                    @Override
+                    public void onCompleted() {
+                        latch.countDown();
+                    }
+                });
         Arrays.asList(
                 new feedMassToAdd(1, "Adam"),
                 new feedMassToAdd(2, "Eve"),
@@ -89,7 +90,9 @@ public class FeedClient extends ClientBase {
         var stub = FeedServiceGrpc.newBlockingStub(getChannel());
 
         // get the response from the server by calling the service with a new request
-        stub.withInterceptors(new ClientInterceptor()).currentWaterAvailable(CurrentWaterRequest
+        stub.withInterceptors(new ClientInterceptor())
+                .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
+                .currentWaterAvailable(CurrentWaterRequest
                         .newBuilder()
                         .setCheckedBy("Bryan")
                         .build())
@@ -117,12 +120,13 @@ public class FeedClient extends ClientBase {
         // get the response from the server by calling the service with a new request
         var response =
                 stub.withInterceptors(new ClientInterceptor())
+                        .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
                         .feedConsumption(FeedConsumptionRequest
-                        .newBuilder()
-                        .setStartDate(Timestamp.newBuilder().setNanos(123456789).build())
-                        .setEndDate(Timestamp.newBuilder().setNanos(234567891).build())
-                        .setCheckedBy("Bryan")
-                        .build());
+                                .newBuilder()
+                                .setStartDate(Timestamp.newBuilder().setNanos(123456789).build())
+                                .setEndDate(Timestamp.newBuilder().setNanos(234567891).build())
+                                .setCheckedBy("Bryan")
+                                .build());
 
         // print the response to the console
         System.out.println("Feed Consumption Response: " + response);

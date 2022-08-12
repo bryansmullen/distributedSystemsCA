@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class MilkingClient extends ClientBase {
     Logger logger = LoggerFactory.getLogger(MilkingClient.class); //
@@ -32,6 +33,8 @@ public class MilkingClient extends ClientBase {
 
         // get the response from the server by calling the service with a new request
         stub.withInterceptors(new ClientInterceptor())
+                .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
+                // within 5 seconds, the call will fail
                 .milkCollection(MilkCollectionRequest
                         .newBuilder()
                         .setCheckedBy("Bryan")
@@ -58,6 +61,7 @@ public class MilkingClient extends ClientBase {
         // get the response from the server by calling the service with a new request
         var response =
                 stub.withInterceptors(new ClientInterceptor())
+                        .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
                         .milkProduction(MilkProductionRequest.newBuilder().setCheckedBy("Bryan").build());
 
         // print the response to the console
@@ -81,6 +85,7 @@ public class MilkingClient extends ClientBase {
 
         // get the response from the server by calling the service with a new request
         stub.withInterceptors(new ClientInterceptor())
+                .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
                 .milkCurrentCow(MilkCurrentCowRequest
                         .newBuilder()
                         .setCheckedBy("Bryan")
