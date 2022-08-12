@@ -8,7 +8,7 @@ public class FeedClientApp {
 
         feedClient.getService();
         feedClient.addToFeedAvailable();
-        feedClient.feedConsumption();
         feedClient.currentWaterAvailable();
+        feedClient.feedConsumption();
     }
 }
