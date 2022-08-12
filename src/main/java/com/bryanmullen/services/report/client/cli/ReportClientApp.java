@@ -9,6 +9,7 @@ public class ReportClientApp {
         reportClient.getService();
         reportClient.cowReport();
         reportClient.herdReport();
+
     }
 
 }

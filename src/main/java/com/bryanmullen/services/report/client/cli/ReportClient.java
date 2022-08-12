@@ -5,6 +5,8 @@ import com.bryanmullen.reportService.HerdReportRequest;
 import com.bryanmullen.reportService.HerdReportResponse;
 import com.bryanmullen.reportService.ReportServiceGrpc;
 import com.bryanmullen.services.shared.ClientBase;
+import io.grpc.ForwardingClientCall;
+import io.grpc.Metadata;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +33,14 @@ public class ReportClient extends ClientBase {
         // log the start of the call
         logger.info("Starting to do Cow Report method...");
 
+
         // create the client stub for the service
         var stub = ReportServiceGrpc.newBlockingStub(getChannel());
 
         // get the response from the server by calling the service with a new request
         var response =
-                stub.cowReport(CowReportRequest
+                stub.withInterceptors(new ClientInterceptor())
+                        .cowReport(CowReportRequest
                         .newBuilder()
                         .setCowId(1)
                         .setCheckedBy("Bryan")
@@ -70,11 +74,13 @@ public class ReportClient extends ClientBase {
             public void onNext(HerdReportResponse response) {
                 logger.info("Herd Report Response: " + response);
             }
+
             @Override
             public void onError(Throwable t) {
                 System.out.println("Error: " + t.getMessage());
                 latch.countDown();
             }
+
             @Override
             public void onCompleted() {
                 System.out.println("Completed");
@@ -98,4 +104,19 @@ public class ReportClient extends ClientBase {
 
     }
 
+    static class ClientInterceptor implements io.grpc.ClientInterceptor {
+        Logger logger = LoggerFactory.getLogger(ClientInterceptor.class); //
+
+        @Override
+        public <ReqT, RespT> io.grpc.ClientCall<ReqT, RespT> interceptCall(io.grpc.MethodDescriptor<ReqT, RespT> method, io.grpc.CallOptions callOptions, io.grpc.Channel next) {
+            return new ForwardingClientCall.SimpleForwardingClientCall<>(next.newCall(method, callOptions)) {
+                @Override
+                public void start(Listener<RespT> responseListener, Metadata headers) {
+                    logger.info("Adding Metadata");
+                    headers.put(Metadata.Key.of("HOSTNAME", Metadata.ASCII_STRING_MARSHALLER), "BRYANS-PC");
+                    super.start(responseListener, headers);
+                }
+            };
+        }
+    }
 }
