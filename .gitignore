@@ -40,3 +40,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/src/ssl/ca.crt
+/src/ssl/ca.key
+/src/ssl/server.crt
+/src/ssl/server.csr
+/src/ssl/server.key
+/src/ssl/server.pem

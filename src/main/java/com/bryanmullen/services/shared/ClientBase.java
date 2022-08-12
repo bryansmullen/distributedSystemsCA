@@ -18,7 +18,7 @@ public abstract class ClientBase {
         properties = PropertiesReader.getProperties(propertiesFilePath);
     }
 
-    public void getService() {
+    public void getService()  {
         // find service on the network
         String SERVICE_TYPE = properties.getProperty("service_type");
 
@@ -53,10 +53,16 @@ public abstract class ClientBase {
     public ManagedChannel getChannel() {
         return channel;
     }
+    private void setChannel(String host, int port)  {
+//        TODO: Troubleshoot why tls key is not correctly read in
+//        var creds = TlsChannelCredentials.newBuilder()
+//                .trustManager(new File("src/ssl/ca.crt"))
+//                .build();
+//
+//        channel = Grpc.newChannelBuilderForAddress("localhost", port, creds)
+//                .build();
 
-    private void setChannel(String host, int port) {
-        channel = ManagedChannelBuilder.
-                forAddress(host, port)
+        channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext()
                 .build();
     }

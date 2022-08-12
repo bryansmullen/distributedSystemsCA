@@ -14,6 +14,7 @@ public class FeedServer extends ServerBase {
     Server feedServer = ServerBuilder
             .forPort(Integer.parseInt(getProperties().getProperty(
                     "service_port")))
+            // .useTransportSecurity(new File("src/ssl/server.crt"), new File("src/ssl/server.pem")) TODO: Troubleshoot why tls key is not correctly read in on client side before enabling this
             .addService(new FeedServiceImpl())
             .build();
 
