@@ -1,5 +1,6 @@
 package com.bryanmullen.services.milking.client.cli;
 
+import com.bryanmullen.interceptors.ClientInterceptor;
 import com.bryanmullen.milkingService.MilkCollectionRequest;
 import com.bryanmullen.milkingService.MilkCurrentCowRequest;
 import com.bryanmullen.milkingService.MilkProductionRequest;
@@ -30,7 +31,8 @@ public class MilkingClient extends ClientBase {
         var stub = MilkingServiceGrpc.newBlockingStub(getChannel());
 
         // get the response from the server by calling the service with a new request
-        stub.milkCollection(MilkCollectionRequest
+        stub.withInterceptors(new ClientInterceptor())
+                .milkCollection(MilkCollectionRequest
                         .newBuilder()
                         .setCheckedBy("Bryan")
                         .build())
@@ -55,7 +57,8 @@ public class MilkingClient extends ClientBase {
 
         // get the response from the server by calling the service with a new request
         var response =
-                stub.milkProduction(MilkProductionRequest.newBuilder().setCheckedBy("Bryan").build());
+                stub.withInterceptors(new ClientInterceptor())
+                        .milkProduction(MilkProductionRequest.newBuilder().setCheckedBy("Bryan").build());
 
         // print the response to the console
         System.out.println("Milk Production Response: " + response);
@@ -77,7 +80,8 @@ public class MilkingClient extends ClientBase {
         var stub = MilkingServiceGrpc.newBlockingStub(getChannel());
 
         // get the response from the server by calling the service with a new request
-        stub.milkCurrentCow(MilkCurrentCowRequest
+        stub.withInterceptors(new ClientInterceptor())
+                .milkCurrentCow(MilkCurrentCowRequest
                         .newBuilder()
                         .setCheckedBy("Bryan")
                         .build())

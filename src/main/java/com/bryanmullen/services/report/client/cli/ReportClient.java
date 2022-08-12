@@ -1,12 +1,11 @@
 package com.bryanmullen.services.report.client.cli;
 
+import com.bryanmullen.interceptors.ClientInterceptor;
 import com.bryanmullen.reportService.CowReportRequest;
 import com.bryanmullen.reportService.HerdReportRequest;
 import com.bryanmullen.reportService.HerdReportResponse;
 import com.bryanmullen.reportService.ReportServiceGrpc;
 import com.bryanmullen.services.shared.ClientBase;
-import io.grpc.ForwardingClientCall;
-import io.grpc.Metadata;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +67,8 @@ public class ReportClient extends ClientBase {
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        StreamObserver<HerdReportRequest> streamObserver = stub.herdReport(new StreamObserver<>() {
+        StreamObserver<HerdReportRequest> streamObserver =
+                stub.withInterceptors(new ClientInterceptor()).herdReport(new StreamObserver<>() {
             // client side - streamObserver is the client side of the stream
             @Override
             public void onNext(HerdReportResponse response) {
@@ -104,19 +104,4 @@ public class ReportClient extends ClientBase {
 
     }
 
-    static class ClientInterceptor implements io.grpc.ClientInterceptor {
-        Logger logger = LoggerFactory.getLogger(ClientInterceptor.class); //
-
-        @Override
-        public <ReqT, RespT> io.grpc.ClientCall<ReqT, RespT> interceptCall(io.grpc.MethodDescriptor<ReqT, RespT> method, io.grpc.CallOptions callOptions, io.grpc.Channel next) {
-            return new ForwardingClientCall.SimpleForwardingClientCall<>(next.newCall(method, callOptions)) {
-                @Override
-                public void start(Listener<RespT> responseListener, Metadata headers) {
-                    logger.info("Adding Metadata");
-                    headers.put(Metadata.Key.of("HOSTNAME", Metadata.ASCII_STRING_MARSHALLER), "BRYANS-PC");
-                    super.start(responseListener, headers);
-                }
-            };
-        }
-    }
 }

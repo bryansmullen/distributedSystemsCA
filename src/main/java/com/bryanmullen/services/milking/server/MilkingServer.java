@@ -1,6 +1,7 @@
 package com.bryanmullen.services.milking.server;
 
 
+import com.bryanmullen.interceptors.ServerInterceptor;
 import com.bryanmullen.services.shared.ServerBase;
 import io.grpc.BindableService;
 import io.grpc.Server;
@@ -17,6 +18,7 @@ public class MilkingServer extends ServerBase {
                     "service_port")))
             // .useTransportSecurity(new File("src/ssl/server.crt"), new File("src/ssl/server.pem")) TODO: Troubleshoot why tls key is not correctly read in on client side before enabling this
             .addService(new MilkingServiceImpl())
+            .intercept(new ServerInterceptor())
             .build();
 
 

@@ -1,6 +1,7 @@
 package com.bryanmullen.services.feed.client.cli;
 
 import com.bryanmullen.feedService.*;
+import com.bryanmullen.interceptors.ClientInterceptor;
 import com.bryanmullen.services.shared.ClientBase;
 import com.google.protobuf.Timestamp;
 import io.grpc.stub.StreamObserver;
@@ -34,7 +35,7 @@ public class FeedClient extends ClientBase {
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        var streamObserver = stub.addToFeedAvailable(new StreamObserver<>() {
+        var streamObserver = stub.withInterceptors(new ClientInterceptor()).addToFeedAvailable(new StreamObserver<>() {
             @Override
             public void onNext(AddToFeedResponse response) {
                 logger.info("Received response: " + response);
@@ -88,7 +89,7 @@ public class FeedClient extends ClientBase {
         var stub = FeedServiceGrpc.newBlockingStub(getChannel());
 
         // get the response from the server by calling the service with a new request
-        stub.currentWaterAvailable(CurrentWaterRequest
+        stub.withInterceptors(new ClientInterceptor()).currentWaterAvailable(CurrentWaterRequest
                         .newBuilder()
                         .setCheckedBy("Bryan")
                         .build())
@@ -115,7 +116,8 @@ public class FeedClient extends ClientBase {
 
         // get the response from the server by calling the service with a new request
         var response =
-                stub.feedConsumption(FeedConsumptionRequest
+                stub.withInterceptors(new ClientInterceptor())
+                        .feedConsumption(FeedConsumptionRequest
                         .newBuilder()
                         .setStartDate(Timestamp.newBuilder().setNanos(123456789).build())
                         .setEndDate(Timestamp.newBuilder().setNanos(234567891).build())

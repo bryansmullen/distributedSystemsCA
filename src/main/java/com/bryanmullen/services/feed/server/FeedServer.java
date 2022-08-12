@@ -1,5 +1,6 @@
 package com.bryanmullen.services.feed.server;
 
+import com.bryanmullen.interceptors.ServerInterceptor;
 import com.bryanmullen.services.shared.ServerBase;
 import io.grpc.BindableService;
 import io.grpc.Server;
@@ -16,6 +17,7 @@ public class FeedServer extends ServerBase {
                     "service_port")))
             // .useTransportSecurity(new File("src/ssl/server.crt"), new File("src/ssl/server.pem")) TODO: Troubleshoot why tls key is not correctly read in on client side before enabling this
             .addService(new FeedServiceImpl())
+            .intercept(new ServerInterceptor())
             .build();
 
     public void run() {
