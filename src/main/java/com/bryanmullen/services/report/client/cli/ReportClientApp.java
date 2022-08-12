@@ -6,6 +6,7 @@ public class ReportClientApp {
     public static void main(String[] args) throws IOException {
 
         var reportClient = new ReportClient("src/main/resources/report.properties");
+        reportClient.getService();
         reportClient.cowReport();
         reportClient.herdReport();
     }

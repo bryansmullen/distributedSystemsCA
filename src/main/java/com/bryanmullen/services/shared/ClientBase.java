@@ -41,7 +41,6 @@ public abstract class ClientBase {
 
             // create the channel
             setChannel(HOST, PORT);
-
         }
     }
 
