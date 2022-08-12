@@ -1,6 +1,5 @@
 package com.bryanmullen.services.report.server;
 
-import com.bryanmullen.services.milking.server.MilkingServiceImpl;
 import com.bryanmullen.services.shared.ServerBase;
 import io.grpc.BindableService;
 import io.grpc.Server;
@@ -13,16 +12,16 @@ public class ReportServer extends ServerBase {
         super(propertiesFilePath, bindableService);
     }
 
-    Server milkingServer = ServerBuilder
+    Server reportServer = ServerBuilder
             .forPort(Integer.parseInt(getProperties().getProperty(
                     "service_port")))
-            .addService(new MilkingServiceImpl())
+            .addService(new ReportServiceImpl())
             .build();
 
 
     public void run() {
         try {
-            super.run(milkingServer);
+            super.run(reportServer);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

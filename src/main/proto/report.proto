@@ -10,8 +10,18 @@ option java_outer_classname = "ReportPackage";
 package reportService;
 
 // messages
-message CowReportRequest{}
-message CowReportResponse{}
+message CowReportRequest{
+  string checkedBy = 1;
+  int32 cowId = 2;
+}
+
+message CowReportResponse{
+  int32 cowId = 1;
+  string cowName = 2;
+  double weight = 3;
+  double milkProducedThisMonth = 4;
+}
+
 message HerdReportRequest{}
 message HerdReportResponse{}
 
@@ -20,8 +30,8 @@ service ReportService {
   // This method should return a report about a particular cow, including
   // information about the amount of milk that particular cow has produced,
   // it’s current known weight, id etc. This method will be implemented
-  // usingClient Streaming.
-  rpc cowReport (stream CowReportRequest) returns (CowReportResponse) {}
+  // usingClient Unary Method.
+  rpc cowReport (CowReportRequest) returns (CowReportResponse) {}
 
   // This method should return a report about the entire herd as a whole,
   // calculating the average milk produced per cow, the average feed consumed
