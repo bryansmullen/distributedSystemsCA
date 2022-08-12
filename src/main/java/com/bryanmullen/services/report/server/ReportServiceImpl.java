@@ -69,6 +69,7 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
     @Override
     public StreamObserver<HerdReportRequest> herdReport(StreamObserver<HerdReportResponse> responseStreamObserver) {
         List<CowReportResponse> herdReport = new ArrayList<>();
+
         return new StreamObserver<>() {
             @Override
             public void onNext(HerdReportRequest request) {
@@ -87,8 +88,6 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
                         .build();
 
                 herdReport.add(cowReportResponse);
-                System.out.println("herdReport size: " + herdReport.size());
-                System.out.println(herdReport);
             }
 
             @Override

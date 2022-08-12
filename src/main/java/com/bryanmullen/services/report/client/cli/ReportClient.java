@@ -1,12 +1,17 @@
 package com.bryanmullen.services.report.client.cli;
 
 import com.bryanmullen.reportService.CowReportRequest;
+import com.bryanmullen.reportService.HerdReportRequest;
+import com.bryanmullen.reportService.HerdReportResponse;
 import com.bryanmullen.reportService.ReportServiceGrpc;
 import com.bryanmullen.services.shared.ClientBase;
+import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class ReportClient extends ClientBase {
     Logger logger = LoggerFactory.getLogger(ReportClient.class); //
@@ -17,6 +22,11 @@ public class ReportClient extends ClientBase {
         super(propertiesFilePath);
     }
 
+    /**
+     * This method should return a report about a particular cow, including information about the amount of milk that
+     * particular cow has produced, it’s current known weight, id etc. This method will be implemented using Client
+     * Streaming.
+     */
     public void cowReport() {
         // log the start of the call
         logger.info("Starting to do Cow Report method...");
@@ -40,8 +50,51 @@ public class ReportClient extends ClientBase {
 
     }
 
-    public void herdReport() {
-        System.out.println("Starting to do Herd Report method...");
+    /**
+     * This method should return a report about the entire herd as a whole, calculating the average milk produced per
+     * cow, the average feed consumed per cow, as well as average statistics such as weight etc. for a broad overview of
+     * the herd.This method will be implemented using Client Streaming.
+     */
+    public void herdReport() throws InterruptedException {
+        // log the start of the call
+        logger.info("Starting to do Herd Report method...");
+
+        var stub = ReportServiceGrpc.newStub(getChannel());
+
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        StreamObserver<HerdReportRequest> streamObserver = stub.herdReport(new StreamObserver<>() {
+            // client side - streamObserver is the client side of the stream
+            @Override
+            public void onNext(HerdReportResponse response) {
+                logger.info("Herd Report Response: " + response);
+            }
+            @Override
+            public void onError(Throwable t) {
+                System.out.println("Error: " + t.getMessage());
+                latch.countDown();
+            }
+            @Override
+            public void onCompleted() {
+                System.out.println("Completed");
+                latch.countDown();
+            }
+        });
+
+        // server side - send the request
+        for (int i = 0; i < 10; i++) {
+            streamObserver.onNext(HerdReportRequest
+                    .newBuilder()
+                    .setCowId(i)
+                    .setCheckedBy("Bryan")
+                    .build());
+            Thread.sleep(1000);
+        }
+
+        streamObserver.onCompleted();
+        //noinspection ResultOfMethodCallIgnored
+        latch.await(5, TimeUnit.SECONDS);
 
     }
 
