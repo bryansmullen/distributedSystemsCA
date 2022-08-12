@@ -1,6 +1,7 @@
 package com.bryanmullen.services.milking.client.cli;
 
 import com.bryanmullen.milkingService.MilkCollectionRequest;
+import com.bryanmullen.milkingService.MilkCurrentCowRequest;
 import com.bryanmullen.milkingService.MilkProductionRequest;
 import com.bryanmullen.milkingService.MilkingServiceGrpc;
 import com.bryanmullen.services.shared.ClientBase;
@@ -69,10 +70,22 @@ public class MilkingClient extends ClientBase {
      * implemented using Server Streaming.
      */
     public void milkCurrentCow() {
-        // inform the user of the start of the call
-        System.out.println("Starting to do Milk Current Cow method...");
-        super.closeChannel();
+        // log the start of the call
+        logger.info("Starting to do Milk Current Cow method...");
 
+        // create the client stub for the service
+        var stub = MilkingServiceGrpc.newBlockingStub(getChannel());
+
+        // get the response from the server by calling the service with a new request
+        stub.milkCurrentCow(MilkCurrentCowRequest
+                        .newBuilder()
+                        .setCheckedBy("Bryan")
+                        .build())
+                .forEachRemaining(milkCurrentCowResponse -> logger.info("Milk Current Cow Response received from " +
+                        "server: " + milkCurrentCowResponse));
+
+        // close the channel
+        super.closeChannel();
     }
 
 
