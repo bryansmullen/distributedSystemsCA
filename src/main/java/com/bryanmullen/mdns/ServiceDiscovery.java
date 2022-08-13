@@ -8,13 +8,16 @@ import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 
+/**
+ * ServiceDiscovery - A class to discover services on the local network using JmDNS.
+ */
 public class ServiceDiscovery {
     //public static void main(String[] args) {
     public static ServiceInfo run(String serviceType) {
 
         ServiceInfo serviceInfo = null;
         // get an instance of jmDNS
-        
+
         try {
             // get an instance of jmDNS. Don't ask why, but the IP address
             // has to be manually inputted on my home network, my phone
@@ -40,9 +43,7 @@ public class ServiceDiscovery {
             // discovery of services.
             jmdns.close();
 
-
         } catch (IOException | InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -54,6 +55,11 @@ public class ServiceDiscovery {
         return serviceInfo;
 
     }
+
+
+    /**
+     * MyServiceListener - A subclass to listen for service events.
+     */
     private static class MyServiceListener implements ServiceListener {
         // instance variables
         private ServiceInfo serviceInfo;
