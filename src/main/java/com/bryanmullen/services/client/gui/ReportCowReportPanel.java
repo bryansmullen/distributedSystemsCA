@@ -76,4 +76,5 @@ public class ReportCowReportPanel extends PanelBase {
     }
     public JPanel getPanel() {
         return panel;
-    }}
+    }
+}

@@ -1,10 +1,22 @@
 package com.bryanmullen.services.client.gui;
 
+import com.bryanmullen.interceptors.ClientInterceptor;
+import com.bryanmullen.reportService.HerdReportRequest;
+import com.bryanmullen.reportService.HerdReportResponse;
+import com.bryanmullen.reportService.ReportServiceGrpc;
+import io.grpc.stub.StreamObserver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class ReportHerdReportPanel extends PanelBase {
+    Logger logger = LoggerFactory.getLogger(ReportHerdReportPanel.class); //
+    // Logger for this class so we can log messages to the console.
     JPanel panel;
     JLabel label1;
     JLabel label2;
@@ -15,6 +27,9 @@ public class ReportHerdReportPanel extends PanelBase {
 
     public ReportHerdReportPanel() throws IOException {
         super("src/main/resources/report.properties");
+
+        getService();
+
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
@@ -33,7 +48,13 @@ public class ReportHerdReportPanel extends PanelBase {
         textNumber2.setColumns(10);
 
         sendRequestButton = new JButton("Send Request");
-        sendRequestButton.addActionListener(event -> System.out.println("Clicked"));
+        sendRequestButton.addActionListener(event -> {
+            try {
+                doHerdReport();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
         panel.add(sendRequestButton);
 
 
@@ -45,6 +66,52 @@ public class ReportHerdReportPanel extends PanelBase {
         panel.add(scrollPane);
     }
 
+    private void doHerdReport() throws InterruptedException {
+        logger.info("Starting to do Herd Report method...");
+
+        var stub = ReportServiceGrpc.newStub(getChannel());
+
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        StreamObserver<HerdReportRequest> streamObserver =
+                stub.withInterceptors(new ClientInterceptor()).withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
+                        .herdReport(new StreamObserver<>() {
+                            // client side - streamObserver is the client side of the stream
+                            @Override
+                            public void onNext(HerdReportResponse response) {
+                                logger.info("Herd Report Response: " + response);
+                                textResponse.setText(String.valueOf(response));
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                System.out.println("Error: " + t.getMessage());
+                                latch.countDown();
+                            }
+
+                            @Override
+                            public void onCompleted() {
+                                System.out.println("Completed");
+                                latch.countDown();
+                            }
+                        });
+
+        // server side - send the request
+        for (int i = 0; i < 10; i++) {
+            streamObserver.onNext(HerdReportRequest
+                    .newBuilder()
+                    .setCowId(Integer.parseInt(textNumber2.getText()) + i)
+                    .setCheckedBy(textNumber1.getText())
+                    .build());
+
+        }
+
+        streamObserver.onCompleted();
+        //noinspection ResultOfMethodCallIgnored
+        latch.await(5, TimeUnit.SECONDS);
+
+    }
     public JPanel getPanel() {
         return panel;
     }

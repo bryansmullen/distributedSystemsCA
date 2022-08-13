@@ -94,7 +94,7 @@ public class ReportClient extends ClientBase {
         for (int i = 0; i < 10; i++) {
             streamObserver.onNext(HerdReportRequest
                     .newBuilder()
-                    .setCowId(cowId)
+                    .setCowId(cowId + i)
                     .setCheckedBy(checkedBy)
                     .build());
             Thread.sleep(1000);
