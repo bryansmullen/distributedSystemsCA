@@ -69,6 +69,17 @@ public class ReportHerdReportPanel extends PanelBase {
     private void doHerdReport() throws InterruptedException {
         logger.info("Starting to do Herd Report method...");
 
+
+        if (textNumber1.getText().isEmpty()) {
+            textResponse.setText("ERROR: Please enter a name in the checkedBy field \n");
+            return;
+        }
+
+        if (!textNumber2.getText().matches("-?\\d+(\\.\\d+)?")) {
+            textResponse.setText("ERROR: Please enter a number in the cowID field \n");
+            return;
+        }
+
         var stub = ReportServiceGrpc.newStub(getChannel());
 
 

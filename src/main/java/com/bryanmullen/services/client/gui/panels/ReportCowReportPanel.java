@@ -61,6 +61,16 @@ public class ReportCowReportPanel extends PanelBase {
     private void doCowReport() {
         logger.info("Starting to do Cow Report method...");
 
+        if (textNumber1.getText().isEmpty()) {
+            textResponse.setText("ERROR: Please enter a name in the checkedBy field \n");
+            return;
+        }
+
+        if (!textNumber2.getText().matches("-?\\d+(\\.\\d+)?")) {
+            textResponse.setText("ERROR: Please enter a number in the cowID field \n");
+            return;
+        }
+
         var stub = ReportServiceGrpc.newBlockingStub(getChannel());
         var request = CowReportRequest.newBuilder()
                 .setCheckedBy(textNumber1.getText())
@@ -77,4 +87,5 @@ public class ReportCowReportPanel extends PanelBase {
     public JPanel getPanel() {
         return panel;
     }
+
 }
