@@ -70,6 +70,21 @@ public class FeedFeedConsumptionPanel extends PanelBase {
     private void doFeedConsumption() {
         logger.info("Starting to do Milk Production method...");
 
+        if (datePicker1.getDate() == null || datePicker2.getDate() == null) {
+            textResponse.setText("ERROR: Please enter a date for start date and end date \n");
+            return;
+        }
+
+        if (datePicker2.getDate().compareTo(datePicker1.getDate()) < 0) {
+            textResponse.setText("ERROR: endDate must be after startDate");
+            return;
+        }
+
+        if (textNumber3.getText().isEmpty()) {
+            textResponse.setText("ERROR: Please enter a name in the checkedBy field \n");
+            return;
+        }
+
         var stub = FeedServiceGrpc.newBlockingStub(getChannel());
         var request = FeedConsumptionRequest.newBuilder()
                 .setStartDate(Timestamp.newBuilder().setSeconds(datePicker1.getDate().getSeconds()).build())
@@ -84,6 +99,7 @@ public class FeedFeedConsumptionPanel extends PanelBase {
                 .feedConsumption(request);
         textResponse.setText(String.valueOf(response));
     }
+
     public JPanel getPanel() {
         return panel;
     }

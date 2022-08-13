@@ -69,6 +69,16 @@ public class FeedAddToFeedPanel extends PanelBase {
         // log the start of the call
         logger.info("Starting to do Add To Feed Available method...");
 
+        if (!textNumber1.getText().matches("-?\\d+(\\.\\d+)?")) {
+            textResponse.setText("ERROR: Please enter a number in the feedMassToAdd field \n");
+            return;
+        }
+
+        if (textNumber2.getText().isEmpty()) {
+            textResponse.setText("ERROR: Please enter a name in the addedBy field \n");
+            return;
+        }
+
         var stub = FeedServiceGrpc.newStub(getChannel());
 
         CountDownLatch latch = new CountDownLatch(1);

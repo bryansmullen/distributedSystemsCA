@@ -53,6 +53,12 @@ public class FeedCurrentWaterPanel extends PanelBase {
         // log the start of the call
         logger.info("Starting to do Current Water Available method...");
 
+
+        if (textNumber1.getText().isEmpty()) {
+            textResponse.setText("ERROR: Please enter a name in the checkedBy field \n");
+            return;
+        }
+
         // create the client stub for the service
         var stub = FeedServiceGrpc.newStub(getChannel());
 
