@@ -14,18 +14,18 @@ public class FeedAddToFeedPanel extends PanelBase {
     JTextArea textResponse;
 
     public FeedAddToFeedPanel() throws IOException {
-        super("src/main/resources/milking.properties");
+        super("src/main/resources/feed.properties");
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        label1 = new JLabel("Cow ID");
+        label1 = new JLabel("Feed Mass To Add");
         panel.add(label1);
 
         textNumber1 = new JTextField();
         panel.add(textNumber1);
         textNumber1.setColumns(10);
 
-        label2 = new JLabel("Checked By");
+        label2 = new JLabel("Added By");
         panel.add(label2);
 
         textNumber2 = new JTextField();
@@ -35,6 +35,7 @@ public class FeedAddToFeedPanel extends PanelBase {
         sendRequestButton = new JButton("Send Request");
         sendRequestButton.addActionListener(event -> System.out.println("Clicked"));
         panel.add(sendRequestButton);
+
 
 
         textResponse = new JTextArea(10, 20);

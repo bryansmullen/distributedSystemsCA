@@ -14,18 +14,18 @@ public class ReportHerdReportPanel extends PanelBase {
     JTextArea textResponse;
 
     public ReportHerdReportPanel() throws IOException {
-        super("src/main/resources/milking.properties");
+        super("src/main/resources/report.properties");
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        label1 = new JLabel("Cow ID");
+        label1 = new JLabel("Checked By");
         panel.add(label1);
 
         textNumber1 = new JTextField();
         panel.add(textNumber1);
         textNumber1.setColumns(10);
 
-        label2 = new JLabel("Checked By");
+        label2 = new JLabel("Cow ID");
         panel.add(label2);
 
         textNumber2 = new JTextField();

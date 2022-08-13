@@ -1,5 +1,7 @@
 package com.bryanmullen.services.client.gui;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -8,29 +10,38 @@ public class FeedFeedConsumptionPanel extends PanelBase {
     JPanel panel;
     JLabel label1;
     JLabel label2;
-    JTextField textNumber1;
-    JTextField textNumber2;
+    JLabel label3;
+    JXDatePicker datePicker1;
+
+    JXDatePicker datePicker2;
+    JTextField textNumber3;
     JButton sendRequestButton;
     JTextArea textResponse;
 
     public FeedFeedConsumptionPanel() throws IOException {
-        super("src/main/resources/milking.properties");
+        super("src/main/resources/feed.properties");
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        label1 = new JLabel("Cow ID");
+        label1 = new JLabel("Start Date");
         panel.add(label1);
 
-        textNumber1 = new JTextField();
-        panel.add(textNumber1);
-        textNumber1.setColumns(10);
+        datePicker1 = new JXDatePicker();
+        panel.add(datePicker1);
 
-        label2 = new JLabel("Checked By");
+        label2 = new JLabel("End Date");
         panel.add(label2);
 
-        textNumber2 = new JTextField();
-        panel.add(textNumber2);
-        textNumber2.setColumns(10);
+        datePicker2 = new JXDatePicker();
+        panel.add(datePicker2);
+
+
+        label3 = new JLabel("Checked By");
+        panel.add(label3);
+
+        textNumber3 = new JTextField();
+        panel.add(textNumber3);
+        textNumber3.setColumns(10);
 
         sendRequestButton = new JButton("Send Request");
         sendRequestButton.addActionListener(event -> System.out.println("Clicked"));
