@@ -7,7 +7,9 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ReportServer extends ServerBase {
     public ReportServer(String propertiesFilePath, BindableService bindableService) throws IOException {
@@ -17,11 +19,16 @@ public class ReportServer extends ServerBase {
     Server reportServer = ServerBuilder
             .forPort(Integer.parseInt(getProperties().getProperty(
                     "service_port")))
-            // .useTransportSecurity(new File("src/ssl/server.crt"), new File("src/ssl/server.pem")) TODO: Troubleshoot why tls key is not correctly read in on client side before enabling this
+            .useTransportSecurity(
+                    getFile("/my-public-key-cert.pem"), //public Key
+                    getFile("/my-private-key.pem")) // private key
             .addService(new ReportServiceImpl())
             .intercept(new ServerInterceptor())
             .build();
 
+    private static File getFile(final String fileName) {
+        return new File(Objects.requireNonNull(ReportServer.class.getResource(fileName)).getFile());
+    }
 
     public void run() {
         try {

@@ -32,6 +32,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     implementation 'no.tornado.databinding:jxdatepicker-support:1.0'
+    implementation 'io.netty:netty-tcnative-boringssl-static:2.0.54.Final'
+    implementation 'io.grpc:grpc-netty:1.48.1'
 
 }
 

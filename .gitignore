@@ -40,9 +40,11 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-/src/ssl/ca.crt
-/src/ssl/ca.key
-/src/ssl/server.crt
-/src/ssl/server.csr
-/src/ssl/server.key
-/src/ssl/server.pem
+/src/main/resources/ssl/ca.crt
+/src/main/resources/ssl/ca.key
+/src/main/resources/ssl/server.crt
+/src/main/resources/ssl/server.csr
+/src/main/resources/ssl/server.key
+/src/main/resources/ssl/server.pem
+/src/main/resources/my-private-key.pem
+/src/main/resources/my-public-key-cert.pem
