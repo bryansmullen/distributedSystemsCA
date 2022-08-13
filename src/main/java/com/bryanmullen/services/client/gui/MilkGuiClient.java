@@ -1,23 +1,22 @@
 package com.bryanmullen.services.client.gui;
 
+import com.bryanmullen.services.client.gui.panels.*;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import javax.swing.*;
 
-public class GuiClient extends JPanel {
+public class MilkGuiClient extends JPanel {
 
-
-    public GuiClient() throws IOException {
+    public MilkGuiClient() throws IOException {
 
 
         super(new GridLayout(1, 1));
 
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        ImageIcon milkIcon = createImageIcon("milk.png");
-        ImageIcon feedIcon = createImageIcon("feed.png");
-        ImageIcon reportIcon = createImageIcon("report.png");
+        ImageIcon milkIcon = createImageIcon();
 
         JComponent panel1 = new MilkCollectionPanel().getPanel();
         panel1.setPreferredSize(new java.awt.Dimension(1000, 300));
@@ -37,37 +36,6 @@ public class GuiClient extends JPanel {
                 "Milk Collection");
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
-        JComponent panel4 = new FeedAddToFeedPanel().getPanel();
-        panel4.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Add To Feed", feedIcon, panel4,
-                "Add To Feed");
-        tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
-
-        JComponent panel5 = new FeedCurrentWaterPanel().getPanel();
-        panel5.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Current Water Available", feedIcon, panel5,
-                "Current Water Available");
-        tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
-
-        JComponent panel6 = new FeedFeedConsumptionPanel().getPanel();
-        panel6.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Feed Consumption", feedIcon, panel6,
-                "Feed Consumption");
-        tabbedPane.setMnemonicAt(5, KeyEvent.VK_6);
-
-        JComponent panel7 = new ReportCowReportPanel().getPanel();
-        panel7.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Cow Report", reportIcon, panel7,
-                "Cow Report");
-        tabbedPane.setMnemonicAt(6, KeyEvent.VK_7);
-
-        JComponent panel8 = new ReportHerdReportPanel().getPanel();
-        panel8.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Herd Report", reportIcon, panel8,
-                "Herd Report");
-        tabbedPane.setMnemonicAt(7, KeyEvent.VK_8);
-
-
         //Add the tabbed pane to this panel.
         add(tabbedPane);
 
@@ -79,12 +47,12 @@ public class GuiClient extends JPanel {
     /**
      * Returns an ImageIcon, or null if the path was invalid.
      */
-    protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = GuiClient.class.getResource(path);
+    protected static ImageIcon createImageIcon() {
+        java.net.URL imgURL = MilkGuiClient.class.getResource("milk.png");
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
-            System.err.println("Couldn't find file: " + path);
+            System.err.println("Couldn't find file: " + "milk.png");
             return null;
         }
     }
@@ -98,7 +66,7 @@ public class GuiClient extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Add content to the window.
-        frame.add(new GuiClient(), BorderLayout.CENTER);
+        frame.add(new MilkGuiClient(), BorderLayout.CENTER);
 
         //Display the window.
         frame.pack();
@@ -118,5 +86,4 @@ public class GuiClient extends JPanel {
             }
         });
     }
-
 }

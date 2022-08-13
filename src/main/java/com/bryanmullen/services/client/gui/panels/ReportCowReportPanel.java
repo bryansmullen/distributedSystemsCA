@@ -1,10 +1,8 @@
-package com.bryanmullen.services.client.gui;
+package com.bryanmullen.services.client.gui.panels;
 
 import com.bryanmullen.interceptors.ClientInterceptor;
-import com.bryanmullen.milkingService.MilkCollectionRequest;
-import com.bryanmullen.milkingService.MilkCollectionResponse;
-import com.bryanmullen.milkingService.MilkingServiceGrpc;
-import io.grpc.stub.StreamObserver;
+import com.bryanmullen.reportService.CowReportRequest;
+import com.bryanmullen.reportService.ReportServiceGrpc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,17 +11,21 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class MilkCollectionPanel extends PanelBase {
-    Logger logger = LoggerFactory.getLogger(MilkCollectionPanel.class); //
+public class ReportCowReportPanel extends PanelBase {
+    Logger logger = LoggerFactory.getLogger(ReportCowReportPanel.class); //
     // Logger for this class so we can log messages to the console.
+
     JPanel panel;
     JLabel label1;
+    JLabel label2;
     JTextField textNumber1;
+    JTextField textNumber2;
     JButton sendRequestButton;
     JTextArea textResponse;
 
-    public MilkCollectionPanel() throws IOException {
-        super("src/main/resources/milking.properties");
+    public ReportCowReportPanel() throws IOException {
+        super("src/main/resources/report.properties");
+
         getService();
 
         panel = new JPanel();
@@ -36,9 +38,17 @@ public class MilkCollectionPanel extends PanelBase {
         panel.add(textNumber1);
         textNumber1.setColumns(10);
 
+        label2 = new JLabel("Cow ID");
+        panel.add(label2);
+
+        textNumber2 = new JTextField();
+        panel.add(textNumber2);
+        textNumber2.setColumns(10);
+
         sendRequestButton = new JButton("Send Request");
-        sendRequestButton.addActionListener(event -> doMilkCollection());
+        sendRequestButton.addActionListener(event -> doCowReport());
         panel.add(sendRequestButton);
+
 
         textResponse = new JTextArea(10, 20);
         textResponse.setLineWrap(true);
@@ -48,35 +58,21 @@ public class MilkCollectionPanel extends PanelBase {
         panel.add(scrollPane);
     }
 
-    private void doMilkCollection() {
-        logger.info("Starting to do Milk Collection method...");
+    private void doCowReport() {
+        logger.info("Starting to do Cow Report method...");
 
-        var stub = MilkingServiceGrpc.newStub(getChannel());
-        var request = MilkCollectionRequest.newBuilder()
+        var stub = ReportServiceGrpc.newBlockingStub(getChannel());
+        var request = CowReportRequest.newBuilder()
                 .setCheckedBy(textNumber1.getText())
+                .setCowId(Integer.parseInt(textNumber2.getText()))
                 .build();
-        stub
+        var response = stub
                 .withInterceptors(new ClientInterceptor())
                 .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second
                 // deadline - if the server
                 // doesn't respond within 5 seconds, the call will fail
-                .milkCollection(request, new StreamObserver<>() {
-                    @Override
-                    public void onNext(MilkCollectionResponse response) {
-                        logger.info("onNext: " + response);
-                        textResponse.append(response + "\n");
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-
-                    @Override
-                    public void onCompleted() {
-
-                    }
-                });
+                .cowReport(request);
+        textResponse.setText(String.valueOf(response));
     }
     public JPanel getPanel() {
         return panel;

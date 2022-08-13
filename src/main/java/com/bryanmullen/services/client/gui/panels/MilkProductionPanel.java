@@ -1,8 +1,8 @@
-package com.bryanmullen.services.client.gui;
+package com.bryanmullen.services.client.gui.panels;
 
 import com.bryanmullen.interceptors.ClientInterceptor;
-import com.bryanmullen.reportService.CowReportRequest;
-import com.bryanmullen.reportService.ReportServiceGrpc;
+import com.bryanmullen.milkingService.MilkProductionRequest;
+import com.bryanmullen.milkingService.MilkingServiceGrpc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,21 +11,17 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class ReportCowReportPanel extends PanelBase {
-    Logger logger = LoggerFactory.getLogger(ReportCowReportPanel.class); //
+public class MilkProductionPanel extends PanelBase {
+    Logger logger = LoggerFactory.getLogger(MilkProductionPanel.class); //
     // Logger for this class so we can log messages to the console.
-
     JPanel panel;
     JLabel label1;
-    JLabel label2;
     JTextField textNumber1;
-    JTextField textNumber2;
     JButton sendRequestButton;
     JTextArea textResponse;
 
-    public ReportCowReportPanel() throws IOException {
-        super("src/main/resources/report.properties");
-
+    public MilkProductionPanel() throws IOException {
+        super("src/main/resources/milking.properties");
         getService();
 
         panel = new JPanel();
@@ -38,15 +34,8 @@ public class ReportCowReportPanel extends PanelBase {
         panel.add(textNumber1);
         textNumber1.setColumns(10);
 
-        label2 = new JLabel("Cow ID");
-        panel.add(label2);
-
-        textNumber2 = new JTextField();
-        panel.add(textNumber2);
-        textNumber2.setColumns(10);
-
         sendRequestButton = new JButton("Send Request");
-        sendRequestButton.addActionListener(event -> doCowReport());
+        sendRequestButton.addActionListener(event -> doMilkProduction());
         panel.add(sendRequestButton);
 
 
@@ -58,20 +47,19 @@ public class ReportCowReportPanel extends PanelBase {
         panel.add(scrollPane);
     }
 
-    private void doCowReport() {
-        logger.info("Starting to do Cow Report method...");
+    private void doMilkProduction() {
+        logger.info("Starting to do Milk Production method...");
 
-        var stub = ReportServiceGrpc.newBlockingStub(getChannel());
-        var request = CowReportRequest.newBuilder()
+        var stub = MilkingServiceGrpc.newBlockingStub(getChannel());
+        var request = MilkProductionRequest.newBuilder()
                 .setCheckedBy(textNumber1.getText())
-                .setCowId(Integer.parseInt(textNumber2.getText()))
                 .build();
         var response = stub
                 .withInterceptors(new ClientInterceptor())
                 .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second
                 // deadline - if the server
                 // doesn't respond within 5 seconds, the call will fail
-                .cowReport(request);
+                .milkProduction(request);
         textResponse.setText(String.valueOf(response));
     }
     public JPanel getPanel() {

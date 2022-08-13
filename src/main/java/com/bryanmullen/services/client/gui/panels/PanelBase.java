@@ -1,4 +1,4 @@
-package com.bryanmullen.services.client.gui;
+package com.bryanmullen.services.client.gui.panels;
 import com.bryanmullen.services.shared.ClientBase;
 import java.io.IOException;
 

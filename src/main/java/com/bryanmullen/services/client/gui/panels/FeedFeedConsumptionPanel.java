@@ -1,4 +1,4 @@
-package com.bryanmullen.services.client.gui;
+package com.bryanmullen.services.client.gui.panels;
 
 import com.bryanmullen.feedService.FeedConsumptionRequest;
 import com.bryanmullen.feedService.FeedServiceGrpc;

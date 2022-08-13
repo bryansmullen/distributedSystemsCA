@@ -1,4 +1,4 @@
-package com.bryanmullen.services.client.gui;
+package com.bryanmullen.services.client.gui.panels;
 
 import com.bryanmullen.feedService.CurrentWaterRequest;
 import com.bryanmullen.feedService.CurrentWaterResponse;

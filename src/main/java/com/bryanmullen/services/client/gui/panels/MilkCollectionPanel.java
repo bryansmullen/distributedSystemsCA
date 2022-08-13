@@ -1,7 +1,9 @@
-package com.bryanmullen.services.client.gui;
+package com.bryanmullen.services.client.gui.panels;
 
 import com.bryanmullen.interceptors.ClientInterceptor;
-import com.bryanmullen.milkingService.*;
+import com.bryanmullen.milkingService.MilkCollectionRequest;
+import com.bryanmullen.milkingService.MilkCollectionResponse;
+import com.bryanmullen.milkingService.MilkingServiceGrpc;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,19 +13,17 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class MilkCurrentCowPanel extends PanelBase {
-    Logger logger = LoggerFactory.getLogger(MilkCurrentCowPanel.class); //
+public class MilkCollectionPanel extends PanelBase {
+    Logger logger = LoggerFactory.getLogger(MilkCollectionPanel.class); //
     // Logger for this class so we can log messages to the console.
-
     JPanel panel;
     JLabel label1;
     JTextField textNumber1;
     JButton sendRequestButton;
     JTextArea textResponse;
 
-    public MilkCurrentCowPanel() throws IOException {
+    public MilkCollectionPanel() throws IOException {
         super("src/main/resources/milking.properties");
-
         getService();
 
         panel = new JPanel();
@@ -37,9 +37,8 @@ public class MilkCurrentCowPanel extends PanelBase {
         textNumber1.setColumns(10);
 
         sendRequestButton = new JButton("Send Request");
-        sendRequestButton.addActionListener(event -> doMilkCurrentCow());
+        sendRequestButton.addActionListener(event -> doMilkCollection());
         panel.add(sendRequestButton);
-
 
         textResponse = new JTextArea(10, 20);
         textResponse.setLineWrap(true);
@@ -49,11 +48,11 @@ public class MilkCurrentCowPanel extends PanelBase {
         panel.add(scrollPane);
     }
 
-    private void doMilkCurrentCow() {
-        logger.info("Starting to do Milk Current Cow method...");
+    private void doMilkCollection() {
+        logger.info("Starting to do Milk Collection method...");
 
         var stub = MilkingServiceGrpc.newStub(getChannel());
-        var request = MilkCurrentCowRequest.newBuilder()
+        var request = MilkCollectionRequest.newBuilder()
                 .setCheckedBy(textNumber1.getText())
                 .build();
         stub
@@ -61,9 +60,9 @@ public class MilkCurrentCowPanel extends PanelBase {
                 .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second
                 // deadline - if the server
                 // doesn't respond within 5 seconds, the call will fail
-                .milkCurrentCow(request, new StreamObserver<>() {
+                .milkCollection(request, new StreamObserver<>() {
                     @Override
-                    public void onNext(MilkCurrentCowResponse response) {
+                    public void onNext(MilkCollectionResponse response) {
                         logger.info("onNext: " + response);
                         textResponse.append(response + "\n");
                     }
@@ -79,7 +78,6 @@ public class MilkCurrentCowPanel extends PanelBase {
                     }
                 });
     }
-
     public JPanel getPanel() {
         return panel;
     }

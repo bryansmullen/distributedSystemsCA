@@ -21,6 +21,7 @@ public class FeedServer extends ServerBase {
             .useTransportSecurity(
                     getFile("/my-public-key-cert.pem"), //public Key
                     getFile("/my-private-key.pem")) // private key            .addService(new MilkingServiceImpl())
+            .addService(new FeedServiceImpl())
             .intercept(new ServerInterceptor())
             .build();
 
