@@ -52,6 +52,11 @@ public class MilkCurrentCowPanel extends PanelBase {
     private void doMilkCurrentCow() {
         logger.info("Starting to do Milk Current Cow method...");
 
+        if (textNumber1.getText().isEmpty()) {
+            textResponse.setText("ERROR: Please enter a name in the checkedBy field \n");
+            return;
+        }
+
         var stub = MilkingServiceGrpc.newStub(getChannel());
         var request = MilkCurrentCowRequest.newBuilder()
                 .setCheckedBy(textNumber1.getText())

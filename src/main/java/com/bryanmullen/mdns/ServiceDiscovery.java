@@ -31,7 +31,7 @@ public class ServiceDiscovery {
             // sleep for 10 seconds - this is the time it takes for the
             // service to be discovered. This may be better implemented with
             // a future object?
-            Thread.sleep(3000);
+            Thread.sleep(500);
 
             // get the service info from the service listener
             serviceInfo = serviceListener.getServiceInfo();

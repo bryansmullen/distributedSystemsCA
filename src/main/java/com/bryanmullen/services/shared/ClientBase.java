@@ -26,12 +26,6 @@ public abstract class ClientBase {
         // find service on the network
         String SERVICE_TYPE = properties.getProperty("service_type");
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            System.out.println("Interrupted");
-        }
-
         serviceInfo = ServiceDiscovery.run(SERVICE_TYPE);
 
         if (serviceInfo == null) {

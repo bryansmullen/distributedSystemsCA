@@ -37,7 +37,6 @@ public class MilkingServiceImpl extends MilkingServiceGrpc.MilkingServiceImplBas
         // log the checker id that is sending the request
         logger.info("Milk Collection Request received from checker " + request.getCheckedBy());
 
-
         // how close together the responses will be sent. Responses will
         // continue to be sent until the milk collection is full.
         int TIME_BETWEEN_RESPONSES_IN_MILLIS = 1000;

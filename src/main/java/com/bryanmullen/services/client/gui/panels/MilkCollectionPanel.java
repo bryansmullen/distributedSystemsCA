@@ -51,12 +51,16 @@ public class MilkCollectionPanel extends PanelBase {
     private void doMilkCollection() {
         logger.info("Starting to do Milk Collection method...");
 
+        if (textNumber1.getText().isEmpty()) {
+            textResponse.setText("ERROR: Please enter a name in the checkedBy field \n");
+            return;
+        }
+
         var stub = MilkingServiceGrpc.newStub(getChannel());
         var request = MilkCollectionRequest.newBuilder()
                 .setCheckedBy(textNumber1.getText())
                 .build();
-        stub
-                .withInterceptors(new ClientInterceptor())
+        stub.withInterceptors(new ClientInterceptor())
                 .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second
                 // deadline - if the server
                 // doesn't respond within 5 seconds, the call will fail

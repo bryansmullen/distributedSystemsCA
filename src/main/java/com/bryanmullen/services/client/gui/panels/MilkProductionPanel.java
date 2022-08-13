@@ -50,6 +50,11 @@ public class MilkProductionPanel extends PanelBase {
     private void doMilkProduction() {
         logger.info("Starting to do Milk Production method...");
 
+        if (textNumber1.getText().isEmpty()) {
+            textResponse.setText("ERROR: Please enter a name in the checkedBy field \n");
+            return;
+        }
+
         var stub = MilkingServiceGrpc.newBlockingStub(getChannel());
         var request = MilkProductionRequest.newBuilder()
                 .setCheckedBy(textNumber1.getText())
