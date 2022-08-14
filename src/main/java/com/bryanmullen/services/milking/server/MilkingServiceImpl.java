@@ -11,9 +11,13 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * MilkingServiceImpl is the implementation of the MilkingService. It is responsible for handling all requests to the
+ * service. It is also responsible for generating the responses to the requests.
+ */
 public class MilkingServiceImpl extends MilkingServiceGrpc.MilkingServiceImplBase {
-    Logger logger = LoggerFactory.getLogger(MilkingServiceImpl.class); //
     // Logger for this class so we can log messages to the console.
+    Logger logger = LoggerFactory.getLogger(MilkingServiceImpl.class);
     final double COLLECTION_CAPACITY = 10; // The capacity of the milking machine.
     Random random = new Random(); // Random number generator - the values we
     // use in this project will be randomly generated as we are not connected
