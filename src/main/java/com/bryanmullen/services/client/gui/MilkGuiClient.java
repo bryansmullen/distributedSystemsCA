@@ -23,26 +23,28 @@ public class MilkGuiClient extends JPanel {
 
         // create a tabbed pane
         JTabbedPane tabbedPane = new JTabbedPane();
-        ImageIcon milkIcon = createImageIcon();
+        ImageIcon milkCollectionIcon = createImageIcon("/icons/milkCollection.png");
+        ImageIcon milkProductionIcon = createImageIcon("/icons/milkProduction.png");
+        ImageIcon milkCurrentCowIcon = createImageIcon("/icons/milkCurrentCow.png");
 
         // create and append first panel - MilkCollectionPanel
         JComponent panel1 = new MilkCollectionPanel().getPanel();
         panel1.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Milk Collection", milkIcon, panel1,
+        tabbedPane.addTab("Milk Collection", milkCollectionIcon, panel1,
                 "Milk Collection");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
         // create and append second panel - MilkProductionPanel
         JComponent panel2 = new MilkProductionPanel().getPanel();
         panel2.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Milk Production", milkIcon, panel2,
+        tabbedPane.addTab("Milk Production", milkProductionIcon, panel2,
                 "Milking Production");
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
         // create and append third panel - MilkCurrentCowPanel
         JComponent panel3 = new MilkCurrentCowPanel().getPanel();
         panel3.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Milk Current Cow", milkIcon, panel3,
+        tabbedPane.addTab("Milk Current Cow", milkCurrentCowIcon, panel3,
                 "Milk Collection");
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
@@ -57,15 +59,15 @@ public class MilkGuiClient extends JPanel {
     /**
      * Returns an ImageIcon, or null if the path was invalid.
      */
-    protected static ImageIcon createImageIcon() {
+    protected static ImageIcon createImageIcon(String filePath) {
         // get the image from the resources' folder.
-        java.net.URL imgURL = MilkGuiClient.class.getResource("/milk.png");
+        java.net.URL imgURL = ReportGuiClient.class.getResource(filePath);
 
         // if the image is not found, return null.
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
-            logger.error("Couldn't find milk.png");
+            logger.error("Couldn't find " + filePath);
             return null;
         }
     }

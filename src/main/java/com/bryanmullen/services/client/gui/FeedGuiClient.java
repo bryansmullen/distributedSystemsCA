@@ -25,26 +25,28 @@ public class FeedGuiClient extends JPanel {
         JTabbedPane tabbedPane = new JTabbedPane();
 
         // create tab icons
-        ImageIcon feedIcon = createImageIcon();
+        ImageIcon addToFeedIcon = createImageIcon("/icons/addToFeed.png");
+        ImageIcon currentWaterIcon = createImageIcon("/icons/currentWater.png");
+        ImageIcon feedConsumptionIcon = createImageIcon("/icons/feedConsumption.png");
 
         // create and append first panel - AddFeedPanel
         JComponent panel1 = new FeedAddToFeedPanel().getPanel();
         panel1.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Add To Feed", feedIcon, panel1,
+        tabbedPane.addTab("Add To Feed", addToFeedIcon, panel1,
                 "Add To Feed");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
         // create and append second panel - currentWaterPanel
         JComponent panel2 = new FeedCurrentWaterPanel().getPanel();
         panel2.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Current Water Available", feedIcon, panel2,
+        tabbedPane.addTab("Current Water Available", currentWaterIcon, panel2,
                 "Current Water Available");
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
         // create and append third panel - feedConsumptionPanel
         JComponent panel3 = new FeedFeedConsumptionPanel().getPanel();
         panel3.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Feed Consumption", feedIcon, panel3,
+        tabbedPane.addTab("Feed Consumption", feedConsumptionIcon, panel3,
                 "Feed Consumption");
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
@@ -59,15 +61,15 @@ public class FeedGuiClient extends JPanel {
     /**
      * Returns an ImageIcon, or null if the path was invalid.
      */
-    protected static ImageIcon createImageIcon() {
+    protected static ImageIcon createImageIcon(String filePath) {
         // get the image from the resources' folder.
-        java.net.URL imgURL = FeedGuiClient.class.getResource("/feed.png");
+        java.net.URL imgURL = ReportGuiClient.class.getResource(filePath);
 
         // if the image is not found, return null.
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
-            logger.error("Couldn't find feed.png");
+            logger.error("Couldn't find " + filePath);
             return null;
         }
     }

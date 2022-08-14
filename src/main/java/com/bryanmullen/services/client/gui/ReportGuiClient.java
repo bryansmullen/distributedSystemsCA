@@ -23,19 +23,20 @@ public class ReportGuiClient extends JPanel {
 
         // create a tabbed pane
         JTabbedPane tabbedPane = new JTabbedPane();
-        ImageIcon reportIcon = createImageIcon();
+        ImageIcon cowReportIcon = createImageIcon("/icons/cowReport.png");
+        ImageIcon herdReportIcon = createImageIcon("/icons/herdReport.png");
 
         // create and append first panel - ReportCowReportPanel
         JComponent panel1 = new ReportCowReportPanel().getPanel();
         panel1.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Cow Report", reportIcon, panel1,
+        tabbedPane.addTab("Cow Report", cowReportIcon, panel1,
                 "Cow Report");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
         // create and append second panel - ReportHerdReportPanel
         JComponent panel2 = new ReportHerdReportPanel().getPanel();
         panel2.setPreferredSize(new java.awt.Dimension(1000, 300));
-        tabbedPane.addTab("Herd Report", reportIcon, panel2,
+        tabbedPane.addTab("Herd Report", herdReportIcon, panel2,
                 "Herd Report");
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
@@ -50,15 +51,15 @@ public class ReportGuiClient extends JPanel {
     /**
      * Returns an ImageIcon, or null if the path was invalid.
      */
-    protected static ImageIcon createImageIcon() {
+    protected static ImageIcon createImageIcon(String filePath) {
         // get the image from the resources' folder.
-        java.net.URL imgURL = ReportGuiClient.class.getResource("report.png");
+        java.net.URL imgURL = ReportGuiClient.class.getResource(filePath);
 
         // if the image is not found, return null.
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
-            logger.error("Couldn't find report.png");
+            logger.error("Couldn't find " + filePath);
             return null;
         }
     }
