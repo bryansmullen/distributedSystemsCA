@@ -14,12 +14,16 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * ReportClient - A CLI client for the report service.
+ */
 public class ReportClient extends ClientBase {
-    Logger logger = LoggerFactory.getLogger(ReportClient.class); //
     // Logger for this class so we can log messages to the console.
+    Logger logger = LoggerFactory.getLogger(ReportClient.class);
 
-
+    // constructor
     public ReportClient(String propertiesFilePath) throws IOException {
+        // call the superclass constructor with the properties file path
         super(propertiesFilePath);
     }
 
@@ -63,44 +67,57 @@ public class ReportClient extends ClientBase {
         // log the start of the call
         logger.info("Starting to do Herd Report method...");
 
+        // create the client stub for the service
         var stub = ReportServiceGrpc.newStub(getChannel());
 
-
+        // initialize a latch to wait for the response from the server
         CountDownLatch latch = new CountDownLatch(1);
 
+        // asynchronous call to the server
         StreamObserver<HerdReportRequest> streamObserver =
-                stub.withInterceptors(new ClientInterceptor()).withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
+                stub
+                        .withInterceptors(new ClientInterceptor()) // add the interceptor to the stub to log the
+                        // hostname and timestamp
+                        .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
                         .herdReport(new StreamObserver<>() {
-                            // client side - streamObserver is the client side of the stream
+                            // onNext - called when the server sends a response
                             @Override
                             public void onNext(HerdReportResponse response) {
+                                // log the response to the console
                                 logger.info("Herd Report Response: " + response);
                             }
 
+                            // onError - called when the server sends an error
                             @Override
                             public void onError(Throwable t) {
+                                // error handling - log the error to the console
                                 System.out.println("Error: " + t.getMessage());
                                 latch.countDown();
                             }
 
+                            // onCompleted - called when the server sends a completion message
                             @Override
                             public void onCompleted() {
-                                System.out.println("Completed");
+                                // decrement the latch
                                 latch.countDown();
                             }
                         });
 
-        // server side - send the request
+        // create multiple requests to the server
         for (int i = 0; i < 10; i++) {
             streamObserver.onNext(HerdReportRequest
                     .newBuilder()
                     .setCowId(cowId + i)
                     .setCheckedBy(checkedBy)
                     .build());
+
+            // wait for 1000 milliseconds before sending the next request
             Thread.sleep(1000);
         }
 
+        // send a completion message to the server
         streamObserver.onCompleted();
+
         //noinspection ResultOfMethodCallIgnored
         latch.await(5, TimeUnit.SECONDS);
 
