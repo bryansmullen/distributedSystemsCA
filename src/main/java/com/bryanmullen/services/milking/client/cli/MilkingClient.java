@@ -12,11 +12,16 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * MilkingClient - A CLI client for the milking service.
+ */
 public class MilkingClient extends ClientBase {
-    Logger logger = LoggerFactory.getLogger(MilkingClient.class); //
     // Logger for this class so we can log messages to the console.
+    Logger logger = LoggerFactory.getLogger(MilkingClient.class);
 
+    // constructor
     public MilkingClient(String propertiesFilePath) throws IOException {
+        // call the superclass constructor with the properties file path
         super(propertiesFilePath);
     }
 
@@ -96,6 +101,4 @@ public class MilkingClient extends ClientBase {
         // close the channel
         super.closeChannel();
     }
-
-
 }
