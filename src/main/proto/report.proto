@@ -38,7 +38,7 @@ service ReportService {
   // This method should return a report about a particular cow, including
   // information about the amount of milk that particular cow has produced,
   // it’s current known weight, id etc. This method will be implemented
-  // usingClient Unary Method.
+  // using Unary Method.
   rpc cowReport (CowReportRequest) returns (CowReportResponse) {}
 
   // This method should return a report about the entire herd as a whole,

@@ -1,6 +1,5 @@
 package com.bryanmullen.services.shared;
 
-import com.bryanmullen.interceptors.ClientInterceptor;
 import com.bryanmullen.mdns.PropertiesReader;
 import com.bryanmullen.mdns.ServiceRegistration;
 import io.grpc.BindableService;
@@ -22,7 +21,7 @@ public abstract class ServerBase {
     // instance variables
 
     // logger for this class
-    Logger logger = LoggerFactory.getLogger(ClientInterceptor.class);
+    Logger logger = LoggerFactory.getLogger(ServerBase.class);
     Properties properties;
     BindableService serviceImpl;
     String serverName;

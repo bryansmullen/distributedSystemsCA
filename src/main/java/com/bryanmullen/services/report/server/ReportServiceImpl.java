@@ -23,8 +23,8 @@ public class ReportServiceImpl extends ReportServiceGrpc.ReportServiceImplBase {
 
     /**
      * This method should return a report about a particular cow, including information about the amount of milk that
-     * particular cow has produced, it’s current known weight, id etc. This method will be implemented using Client
-     * Streaming.
+     * particular cow has produced, it’s current known weight, id etc. This method will be implemented using Unary
+     * Method
      *
      * @param request                - the request object
      * @param responseStreamObserver - the response object

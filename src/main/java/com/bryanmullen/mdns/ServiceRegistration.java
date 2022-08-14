@@ -58,7 +58,7 @@ public class ServiceRegistration {
             logger.info("Service Registered " + serviceInfo.getName());
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            logger.error("Service Registration failed: " + e.getMessage());
         }
     }
 

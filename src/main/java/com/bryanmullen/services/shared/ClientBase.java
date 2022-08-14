@@ -1,6 +1,5 @@
 package com.bryanmullen.services.shared;
 
-import com.bryanmullen.interceptors.ClientInterceptor;
 import com.bryanmullen.mdns.PropertiesReader;
 import com.bryanmullen.mdns.ServiceDiscovery;
 import io.grpc.ManagedChannel;
@@ -20,7 +19,7 @@ public abstract class ClientBase {
     // instance variables
 
     // logger for this class
-    Logger logger = LoggerFactory.getLogger(ClientInterceptor.class);
+    Logger logger = LoggerFactory.getLogger(ClientBase.class);
     Properties properties;
     ManagedChannel channel;
     ServiceInfo serviceInfo;

@@ -31,7 +31,7 @@ public class ServiceDiscovery {
             jmdns.addServiceListener(serviceType, serviceListener);
 
 
-            // sleep for 10 seconds - this is the time it takes for the
+            // sleep for 1 seconds - this is the time it takes for the
             // service to be discovered. This may be better implemented with
             // a future object?
             Thread.sleep(1000);
