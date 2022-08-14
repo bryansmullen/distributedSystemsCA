@@ -9,10 +9,13 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.Random;
 
-
+/**
+ * Implementation of the FeedService. This is the server side implementation of the service. It is
+ * responsible for handling the requests from the client. It will be mounted on the server.
+ */
 public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
-    Logger logger = LoggerFactory.getLogger(FeedServiceImpl.class); //
     // Logger for this class so we can log messages to the console.
+    Logger logger = LoggerFactory.getLogger(FeedServiceImpl.class);
     final double FEED_TRAY_CAPACITY_IN_KG = 10; // The capacity of the feed tray.
     final double WATER_CAPACITY_IN_L = 10; // The capacity of the water tank.
     Random random = new Random(); // Random number generator - the values we
@@ -165,7 +168,7 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
         logger.info("Feed Consumption Request received from checker " + request.getCheckedBy());
 
         // get feed logs from the database
-        var feedLogs = getFeedLogsFromDb(startTime,endTime);
+        var feedLogs = getFeedLogsFromDb(startTime, endTime);
 
         // Build a reply
         var reply = FeedConsumptionResponse.newBuilder()
@@ -187,12 +190,16 @@ public class FeedServiceImpl extends FeedServiceGrpc.FeedServiceImplBase {
         // get the feed logs from the database
         double[] feedLogs = new double[10];
 
+        // log that we are getting the feed logs from the database
         logger.info("Checking Database for Feed Logs between " + startTime + " and " + endTime);
 
+        // return the feed logs from the database - in reality this would be a call to the database to get the feed
+        // logs from the database. We are just returning a random number for the sake of the example.
         for (int i = 0; i < 10; i++) {
             feedLogs[i] = random.nextDouble(FEED_TRAY_CAPACITY_IN_KG);
         }
 
+        // return the feed logs from the database
         return feedLogs;
     }
 }
