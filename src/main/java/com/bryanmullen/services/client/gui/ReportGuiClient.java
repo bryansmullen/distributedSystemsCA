@@ -69,7 +69,7 @@ public class ReportGuiClient extends JPanel {
      */
     private static void createAndShowGUI() throws IOException {
         // Create the frame.
-        JFrame frame = new JFrame("TabbedPaneDemo");
+        JFrame frame = new JFrame("Report Service");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Add the FeedGuiClient to the frame.

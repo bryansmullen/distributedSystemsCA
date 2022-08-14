@@ -110,10 +110,15 @@ public class FeedFeedConsumptionPanel extends ClientBase {
         // get a new blocking stub
         var stub = FeedServiceGrpc.newBlockingStub(getChannel());
 
+        System.out.println(datePicker1.getDate().toInstant());
+        System.out.println(datePicker1.getDate().toString());
+        System.out.println(datePicker1.getDate().getTime());
+
+
         // create the feed consumption request
         var request = FeedConsumptionRequest.newBuilder()
-                .setStartDate(Timestamp.newBuilder().setSeconds(datePicker1.getDate().getSeconds()).build())
-                .setEndDate(Timestamp.newBuilder().setSeconds(datePicker2.getDate().getSeconds()).build())
+                .setStartDate(Timestamp.newBuilder().setSeconds(datePicker1.getDate().toInstant().getEpochSecond()).setNanos(datePicker1.getDate().toInstant().getNano()).build())
+                .setEndDate(Timestamp.newBuilder().setSeconds(datePicker2.getDate().toInstant().getEpochSecond()).setNanos(datePicker2.getDate().toInstant().getNano()).build())
                 .setCheckedBy(textNumber3.getText())
                 .build();
 
