@@ -13,12 +13,16 @@ import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * FeedClient - A CLI client for the feed service.
+ */
 public class FeedClient extends ClientBase {
-    Logger logger = LoggerFactory.getLogger(FeedClient.class); //
     // Logger for this class so we can log messages to the console.
+    Logger logger = LoggerFactory.getLogger(FeedClient.class);
 
-
+    // constructor
     public FeedClient(String propertiesFilePath) throws IOException {
+        // call the superclass constructor with the properties file path
         super(propertiesFilePath);
     }
 
@@ -31,27 +35,41 @@ public class FeedClient extends ClientBase {
         // log the start of the call
         logger.info("Starting to do Add To Feed Available method...");
 
+        // Create a new FeedService.FeedServiceBlockingStub object using the channel created in the super class.
         var stub = FeedServiceGrpc.newStub(getChannel());
 
+        // create a new latch to wait for the response from the server.
         CountDownLatch latch = new CountDownLatch(1);
 
-        var streamObserver = stub.withInterceptors(new ClientInterceptor()).withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
+        // asynchronously call the addToFeedAvailable method on the server.
+        var streamObserver = stub
+                .withInterceptors(new ClientInterceptor()) // Add the interceptor to the client. This will allow us
+                // to log the hostname and timestamp
+                .withDeadlineAfter(10, TimeUnit.SECONDS) // set a 10-second deadline - if the server doesn't respond
                 .addToFeedAvailable(new StreamObserver<>() {
+                    // onNext is called when the server sends a response.
                     @Override
                     public void onNext(AddToFeedResponse response) {
+                        // log the response
                         logger.info("Received response: " + response);
                     }
 
+                    // onError is called if the server returns an error.
                     @Override
                     public void onError(Throwable t) {
-
+                        // error handling - log the error and set the text area to display the error.
+                        logger.info("Error: " + t.getMessage());
                     }
 
+                    // onCompleted is called when the server returns a response.
                     @Override
                     public void onCompleted() {
+                        // decrement the latch so the program can continue.
                         latch.countDown();
                     }
                 });
+
+        // create multiple requests by creating a list of data to send and then sending each one individually.
         Arrays.asList(
                 new feedMassToAdd(1, "Adam"),
                 new feedMassToAdd(2, "Eve"),
@@ -62,6 +80,8 @@ public class FeedClient extends ClientBase {
                                     .setFeedMassToAdd(requestData.feedMassToAdd)
                                     .setAddedBy(requestData.addedBy)
                                     .build());
+
+                    // wait for 3000 milliseconds before sending the next request.
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
@@ -70,11 +90,17 @@ public class FeedClient extends ClientBase {
                 }
         );
 
+        // send the final message to the server.
         streamObserver.onCompleted();
         //noinspection ResultOfMethodCallIgnored
         latch.await(5, TimeUnit.SECONDS);
     }
 
+    /**
+     * private record to allow us to pass data into the request array
+     * @param feedMassToAdd
+     * @param addedBy
+     */
     private record feedMassToAdd(int feedMassToAdd, String addedBy) {
     }
 
