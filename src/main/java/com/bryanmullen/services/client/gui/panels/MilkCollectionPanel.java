@@ -4,6 +4,7 @@ import com.bryanmullen.interceptors.ClientInterceptor;
 import com.bryanmullen.milkingService.MilkCollectionRequest;
 import com.bryanmullen.milkingService.MilkCollectionResponse;
 import com.bryanmullen.milkingService.MilkingServiceGrpc;
+import com.bryanmullen.services.shared.ClientBase;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * MilkCollectionPanel - This class is used to create the panel that will be used to display the milk collection panel.
  */
-public class MilkCollectionPanel extends PanelBase {
+public class MilkCollectionPanel extends ClientBase {
     // Logger for this class so we can log messages to the console.
     Logger logger = LoggerFactory.getLogger(MilkCollectionPanel.class);
     // instance variables

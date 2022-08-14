@@ -2,6 +2,7 @@ package com.bryanmullen.services.client.gui.panels;
 
 import com.bryanmullen.interceptors.ClientInterceptor;
 import com.bryanmullen.milkingService.*;
+import com.bryanmullen.services.shared.ClientBase;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * MilkCurrentCowPanel - This class is used to create the panel that will be used to display the milk current cow
  * panel.
  */
-public class MilkCurrentCowPanel extends PanelBase {
+public class MilkCurrentCowPanel extends ClientBase {
     // Logger for this class so we can log messages to the console.
     Logger logger = LoggerFactory.getLogger(MilkCurrentCowPanel.class);
 

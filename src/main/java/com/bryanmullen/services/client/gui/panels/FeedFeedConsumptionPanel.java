@@ -3,6 +3,7 @@ package com.bryanmullen.services.client.gui.panels;
 import com.bryanmullen.feedService.FeedConsumptionRequest;
 import com.bryanmullen.feedService.FeedServiceGrpc;
 import com.bryanmullen.interceptors.ClientInterceptor;
+import com.bryanmullen.services.shared.ClientBase;
 import com.google.protobuf.Timestamp;
 import org.jdesktop.swingx.JXDatePicker;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * FeedConsumptionPanel - This class is used to create the panel that will be used to display the feed consumption panel.
  */
-public class FeedFeedConsumptionPanel extends PanelBase {
+public class FeedFeedConsumptionPanel extends ClientBase {
     // Logger for this class so we can log messages to the console.
     Logger logger = LoggerFactory.getLogger(FeedFeedConsumptionPanel.class);
 

@@ -4,6 +4,7 @@ import com.bryanmullen.feedService.CurrentWaterRequest;
 import com.bryanmullen.feedService.CurrentWaterResponse;
 import com.bryanmullen.feedService.FeedServiceGrpc;
 import com.bryanmullen.interceptors.ClientInterceptor;
+import com.bryanmullen.services.shared.ClientBase;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class FeedCurrentWaterPanel extends PanelBase {
+public class FeedCurrentWaterPanel extends ClientBase {
     // Logger for this class so we can log messages to the console.
     Logger logger = LoggerFactory.getLogger(FeedCurrentWaterPanel.class);
 

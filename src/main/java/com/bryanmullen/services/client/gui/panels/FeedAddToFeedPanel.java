@@ -4,6 +4,7 @@ import com.bryanmullen.feedService.AddToFeedRequest;
 import com.bryanmullen.feedService.AddToFeedResponse;
 import com.bryanmullen.feedService.FeedServiceGrpc;
 import com.bryanmullen.interceptors.ClientInterceptor;
+import com.bryanmullen.services.shared.ClientBase;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class FeedAddToFeedPanel extends PanelBase {
+public class FeedAddToFeedPanel extends ClientBase {
     // Logger for this class so we can log messages to the console.
     Logger logger = LoggerFactory.getLogger(FeedAddToFeedPanel.class);
 
